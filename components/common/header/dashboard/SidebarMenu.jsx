@@ -42,7 +42,6 @@ const SidebarMenu = () => {
     handleLogout()
       .then(() => {
         // Aici poți adăuga cod pentru ceea ce se întâmplă după logout-ul reușit
-        console.log("Deconectare reușită.");
         // De exemplu, redirecționează utilizatorul către pagina de login
         router.push("/signin");
       })

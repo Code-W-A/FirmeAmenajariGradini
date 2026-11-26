@@ -34,9 +34,9 @@ const WalkScore = () => {
           </div>
         </div>
       </div>
-      <a className="more_info" href="#">
+      <span className="more_info">
         More Details Here
-      </a>
+      </span>
     </>
   );
 };

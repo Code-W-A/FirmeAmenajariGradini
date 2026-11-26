@@ -1,52 +1,70 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const LazyLoadGoogleMap = ({ firma }) => {
-  const [loadMap, setLoad_map] = useState(false);
-
-  // Funcția care decide când să încarce harta
-  const checkAndLoadMap = () => {
-    const mapContainer = document.getElementById("map-container");
-    const bounding = mapContainer.getBoundingClientRect();
-
-    if (
-      bounding.top >= 0 &&
-      bounding.left >= 0 &&
-      bounding.right <=
-        (window.innerWidth || document.documentElement.clientWidth) &&
-      bounding.bottom <=
-        (window.innerHeight || document.documentElement.clientHeight)
-    ) {
-      setLoad_map(true);
-      // Odată ce harta este încărcată, eliminăm event listener-ul
-      window.removeEventListener("scroll", checkAndLoadMap);
+  const [loadMap, setLoadMap] = useState(false);
+  const containerRef = useRef(null);
+  const lat = firma?.coordonate?.lat;
+  const lng = firma?.coordonate?.lng;
+  const addressQuery = [firma?.adresa, firma?.localitate, firma?.judet]
+    .filter((value) => typeof value === "string" && value.trim().length > 0)
+    .join(", ");
+  const hasCoordinates = Number.isFinite(Number(lat)) && Number.isFinite(Number(lng));
+  const hasAddressFallback = addressQuery.length > 0;
+  const hasMapLocation = hasCoordinates || hasAddressFallback;
+  const mapSrc = useMemo(() => {
+    if (hasCoordinates) {
+      return `https://www.google.com/maps?q=${encodeURIComponent(
+        `${lat},${lng}`
+      )}&z=15&output=embed`;
     }
-  };
+
+    if (hasAddressFallback) {
+      return `https://www.google.com/maps?q=${encodeURIComponent(
+        addressQuery
+      )}&z=15&output=embed`;
+    }
+
+    return null;
+  }, [addressQuery, hasAddressFallback, hasCoordinates, lat, lng]);
 
   useEffect(() => {
-    window.addEventListener("scroll", checkAndLoadMap);
-    checkAndLoadMap(); // Verifică la încărcarea inițială dacă elementul este deja vizibil
+    const mapContainer = containerRef.current;
+    if (!mapContainer || !hasMapLocation || loadMap) return undefined;
+
+    if (!("IntersectionObserver" in window)) {
+      setLoadMap(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setLoadMap(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px 0px" }
+    );
+
+    observer.observe(mapContainer);
 
     return () => {
-      window.removeEventListener("scroll", checkAndLoadMap);
+      observer.disconnect();
     };
-  }, []);
+  }, [hasMapLocation, loadMap]);
 
   return (
-    <div id="map-container" style={{ height: "500px" }}>
-      {loadMap && (
+    <div ref={containerRef} id="map-container" style={{ height: "500px" }}>
+      {loadMap && mapSrc && (
         <iframe
           title="Google Map"
-          src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d${
-            firma?.coordonate?.lng
-          }!3d${
-            firma?.coordonate?.lat
-          }!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0:0x0!2z44Cw55'48.0%22N+25Cw26'51.2%22E!5e0!3m2!1sen!2sro!4v${Date.now()}!5m2!1sen!2sro`}
+          src={mapSrc}
           width="100%"
           height="100%"
           style={{ border: 0 }}
-          allowFullScreen=""
+          allowFullScreen
           loading="lazy"
         ></iframe>
       )}

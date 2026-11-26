@@ -66,9 +66,9 @@ const HeroSlider = () => {
               <ul className="prop_details ">
                 {item.itemDetails.map((val, i) => (
                   <li className="list-inline-item" key={i}>
-                    <a href="#">
+                    <span>
                       {val.name}: {val.number}
-                    </a>
+                    </span>
                   </li>
                 ))}
               </ul>

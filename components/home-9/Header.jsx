@@ -29,7 +29,7 @@ const Header = () => {
         {/* <!-- Ace Responsive Menu --> */}
 
         {/* <!-- Menu Toggle btn--> */}
-        <a href="#" className="navbar_brand float-start dn-smd">
+        <span className="navbar_brand float-start dn-smd">
           <Image
             width={40}
             height={45}
@@ -45,7 +45,7 @@ const Header = () => {
             alt="header-logo2.png"
           />
           <span>Titlu</span>
-        </a>
+        </span>
         {/* site logo brand */}
 
         <nav>

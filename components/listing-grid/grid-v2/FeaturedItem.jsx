@@ -145,7 +145,7 @@ const FeaturedItem = () => {
               <ul className="tag mb0">
                 {item.saleTag.map((val, i) => (
                   <li className="list-inline-item" key={i}>
-                    <a href="#">{val}</a>
+                    <span>{val}</span>
                   </li>
                 ))}
               </ul>
@@ -168,9 +168,9 @@ const FeaturedItem = () => {
               <ul className="prop_details mb0">
                 {item.itemDetails.map((val, i) => (
                   <li className="list-inline-item" key={i}>
-                    <a href="#">
+                    <span>
                       {val.name}: {val.number}
-                    </a>
+                    </span>
                   </li>
                 ))}
               </ul>

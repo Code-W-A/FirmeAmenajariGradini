@@ -12,7 +12,6 @@ const fetchLocation = async (latitude, longitude) => {
   try {
     const response = await fetch(url, options);
     const result = await response.json(); // Schimbat de la .text() la .json()
-    // console.log(result);
     return result;
   } catch (error) {
     console.error(error);

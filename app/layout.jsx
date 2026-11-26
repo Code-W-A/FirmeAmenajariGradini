@@ -1,7 +1,3 @@
-// "use client";
-
-import { Provider } from "react-redux";
-import { store } from "../store/store";
 // import ScrollToTop from "@/components/common/ScrollTop";
 import "../public/assets/scss/index.scss";
 import { Nunito } from "next/font/google";
@@ -37,7 +33,6 @@ const defaultMetadata = {
   publisher: "FirmeAmenajariGradina.ro",
   referrer: "origin-when-cross-origin",
   metadataBase: new URL(canonicalUrl("/")),
-  alternates: { canonical: canonicalUrl("/") },
   openGraph: {
     type: "website",
     locale: "ro_RO",
@@ -120,7 +115,6 @@ const nunito = Nunito({
 });
 
 export default function RootLayout({ children }) {
-  const libraries = ["places"];
   const organizationLd = buildOrganizationLd();
   return (
     <html lang="ro">

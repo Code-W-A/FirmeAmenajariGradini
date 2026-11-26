@@ -43,9 +43,9 @@ const SearchData = () => {
                 data-placement="top"
                 title="View"
               >
-                <a href="#">
+                <span>
                   <span className="flaticon-view"></span>
-                </a>
+                </span>
               </li>
               <li
                 className="list-inline-item"
@@ -53,9 +53,9 @@ const SearchData = () => {
                 data-placement="top"
                 title="Edit"
               >
-                <a href="#">
+                <span>
                   <span className="flaticon-edit"></span>
-                </a>
+                </span>
               </li>
               <li
                 className="list-inline-item"
@@ -63,9 +63,9 @@ const SearchData = () => {
                 data-placement="top"
                 title="Delete"
               >
-                <a href="#">
+                <span>
                   <span className="flaticon-garbage"></span>
-                </a>
+                </span>
                 {/* <button onClick={() => uploadJudete(jd)}></button> */}
               </li>
             </ul>

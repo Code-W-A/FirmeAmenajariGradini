@@ -45,7 +45,7 @@ const index = () => {
                         <ul className="tag mb0">
                           <li className="list-inline-item dn"></li>
                           <li className="list-inline-item">
-                            <a href="#">2 Listings</a>
+                            <span>2 Listings</span>
                           </li>
                         </ul>
                       </div>
@@ -57,16 +57,16 @@ const index = () => {
                         <p className="text-thm">Agent</p>
                         <ul className="prop_details mb0">
                           <li>
-                            <a href="#">Office: 134 456 3210</a>
+                            <span>Office: 134 456 3210</span>
                           </li>
                           <li>
-                            <a href="#">Mobile: 891 456 9874</a>
+                            <span>Mobile: 891 456 9874</span>
                           </li>
                           <li>
-                            <a href="#">Fax: 342 654 1258</a>
+                            <span>Fax: 342 654 1258</span>
                           </li>
                           <li>
-                            <a href="#">Email: test@email.com</a>
+                            <span>Email: test@email.com</span>
                           </li>
                         </ul>
                       </div>
@@ -74,29 +74,29 @@ const index = () => {
                       <div className="fp_footer">
                         <ul className="fp_meta float-start mb0">
                           <li className="list-inline-item">
-                            <a href="#">
+                            <span>
                               <i className="fa fa-facebook"></i>
-                            </a>
+                            </span>
                           </li>
                           <li className="list-inline-item">
-                            <a href="#">
+                            <span>
                               <i className="fa fa-twitter"></i>
-                            </a>
+                            </span>
                           </li>
                           <li className="list-inline-item">
-                            <a href="#">
+                            <span>
                               <i className="fa fa-instagram"></i>
-                            </a>
+                            </span>
                           </li>
                           <li className="list-inline-item">
-                            <a href="#">
+                            <span>
                               <i className="fa fa-pinterest"></i>
-                            </a>
+                            </span>
                           </li>
                           <li className="list-inline-item">
-                            <a href="#">
+                            <span>
                               <i className="fa fa-google"></i>
-                            </a>
+                            </span>
                           </li>
                         </ul>
                         <div className="fp_pdate float-end text-thm">

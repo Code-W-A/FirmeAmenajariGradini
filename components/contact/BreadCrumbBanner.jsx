@@ -4,7 +4,8 @@ import { usePathname } from "next/navigation";
 import BreadCrumb from "../common/BreadCrumb";
 import { formatPathname } from "@/utils/commonUtils";
 
-const BreadCrumbBanner = () => {
+const BreadCrumbBanner = ({ hasEditorialHeading }) => {
+  const Heading = hasEditorialHeading ? "p" : "h1";
   const pathname = usePathname();
   const formattedPathname = formatPathname(pathname);
   return (
@@ -21,7 +22,7 @@ const BreadCrumbBanner = () => {
                     : formattedPathname
                 }
               />
-              <h4 className="breadcrumb_title">Contact</h4>
+              <Heading className="breadcrumb_title">Contact</Heading>
             </div>
           </div>
           {/* End .col */}

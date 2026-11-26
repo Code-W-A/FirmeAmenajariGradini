@@ -29,12 +29,12 @@ const Blog = () => {
                 </h4>
                 <ul className="bpg_meta mb10">
                   <li className="list-inline-item">
-                    <a href="#">
+                    <span>
                       <i className="flaticon-calendar"></i>
-                    </a>
+                    </span>
                   </li>
                   <li className="list-inline-item">
-                    <a href="#">{item.postedDate}</a>
+                    <span>{item.postedDate}</span>
                   </li>
                 </ul>
                 <p>{item.postDescriptions.slice(0, 65)}</p>
@@ -44,22 +44,22 @@ const Blog = () => {
               <div className="fp_footer">
                 <ul className="fp_meta float-start mb0">
                   <li className="list-inline-item">
-                    <a href="#">
+                    <span>
                       <Image
                         width={40}
                         height={40}
                         src={item.posterAvatar}
                         alt={item.posterAvatar}
                       />
-                    </a>
+                    </span>
                   </li>
                   <li className="list-inline-item">
-                    <a href="#">{item.posterName}</a>
+                    <span>{item.posterName}</span>
                   </li>
                 </ul>
-                <a className="fp_pdate float-end text-thm" href="#">
+                <span className="fp_pdate float-end text-thm">
                   Read More <span className="flaticon-next"></span>
-                </a>
+                </span>
               </div>
               {/* End fb_footer */}
             </div>

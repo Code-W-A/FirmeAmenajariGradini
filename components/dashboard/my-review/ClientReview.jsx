@@ -11,29 +11,29 @@ const ClientReview = () => {
           {" "}
           <ul>
             <li className="list-inline-item">
-              <a href="#">
+              <span>
                 <i className="fa fa-star"></i>
-              </a>
+              </span>
             </li>
             <li className="list-inline-item">
-              <a href="#">
+              <span>
                 <i className="fa fa-star"></i>
-              </a>
+              </span>
             </li>
             <li className="list-inline-item">
-              <a href="#">
+              <span>
                 <i className="fa fa-star"></i>
-              </a>
+              </span>
             </li>
             <li className="list-inline-item">
-              <a href="#">
+              <span>
                 <i className="fa fa-star"></i>
-              </a>
+              </span>
             </li>
             <li className="list-inline-item">
-              <a href="#">
+              <span>
                 <i className="fa fa-star"></i>
-              </a>
+              </span>
             </li>
           </ul>
         </>
@@ -54,29 +54,29 @@ const ClientReview = () => {
           {" "}
           <ul>
             <li className="list-inline-item">
-              <a href="#">
+              <span>
                 <i className="fa fa-star"></i>
-              </a>
+              </span>
             </li>
             <li className="list-inline-item">
-              <a href="#">
+              <span>
                 <i className="fa fa-star"></i>
-              </a>
+              </span>
             </li>
             <li className="list-inline-item">
-              <a href="#">
+              <span>
                 <i className="fa fa-star"></i>
-              </a>
+              </span>
             </li>
             <li className="list-inline-item">
-              <a href="#">
+              <span>
                 <i className="fa fa-star"></i>
-              </a>
+              </span>
             </li>
             <li className="list-inline-item">
-              <a href="#">
+              <span>
                 <i className="fa fa-star"></i>
-              </a>
+              </span>
             </li>
           </ul>
         </>
@@ -97,29 +97,29 @@ const ClientReview = () => {
           {" "}
           <ul>
             <li className="list-inline-item">
-              <a href="#">
+              <span>
                 <i className="fa fa-star"></i>
-              </a>
+              </span>
             </li>
             <li className="list-inline-item">
-              <a href="#">
+              <span>
                 <i className="fa fa-star"></i>
-              </a>
+              </span>
             </li>
             <li className="list-inline-item">
-              <a href="#">
+              <span>
                 <i className="fa fa-star"></i>
-              </a>
+              </span>
             </li>
             <li className="list-inline-item">
-              <a href="#">
+              <span>
                 <i className="fa fa-star"></i>
-              </a>
+              </span>
             </li>
             <li className="list-inline-item">
-              <a href="#">
+              <span>
                 <i className="fa fa-star"></i>
-              </a>
+              </span>
             </li>
           </ul>
         </>
@@ -153,9 +153,9 @@ const ClientReview = () => {
               </Link>
               <span className="sspd_review float-end">{item.ratings}</span>
             </h5>
-            <a className="review_date" href="#">
+            <span className="review_date">
               December 28, 2020
-            </a>
+            </span>
             <p className="para">{item.text}</p>
 
             <ul className="view_edit_delete_list mb0 mt35">
@@ -165,9 +165,9 @@ const ClientReview = () => {
                 data-placement="top"
                 title="Edit"
               >
-                <a href="#">
+                <span>
                   <span className="flaticon-edit"></span>
-                </a>
+                </span>
               </li>
               {/* End edit */}
 
@@ -177,9 +177,9 @@ const ClientReview = () => {
                 data-placement="top"
                 title="Delete"
               >
-                <a href="#">
+                <span>
                   <span className="flaticon-garbage"></span>
-                </a>
+                </span>
               </li>
               {/* End delete */}
             </ul>

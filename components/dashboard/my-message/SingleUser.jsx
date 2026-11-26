@@ -79,7 +79,7 @@ const SingleUser = () => {
     <>
       {singleUserConent.map((user) => (
         <li className="contact" key={user.id}>
-          <a href="#">
+          <span>
             <div className="wrap">
               <span className={`contact-status ${user.status}`}></span>
               <Image
@@ -97,7 +97,7 @@ const SingleUser = () => {
                 {user.unreadMessage}
               </div>
             </div>
-          </a>
+          </span>
         </li>
       ))}
     </>

@@ -62,7 +62,6 @@ const Index = () => {
   };
 
   const handleSubmit = async () => {
-    console.log("Submitting form with values:", formValues);
     try {
       const judetDocArr = await handleQueryFirestore(
         "Judete",
@@ -71,18 +70,13 @@ const Index = () => {
       );
       let judetDoc = judetDocArr[0];
 
-      console.log("judet..doc...", judetDoc.documentId);
 
       if (isEdit) {
-        console.log("is edit...", formValues);
-        console.log("is edit...", documentId);
-        console.log("is edit...", judetDoc);
         await handleUpdateFirestoreSubcollection(
           formValues,
           `Judete/${judetDoc.documentId}/Localitati/${documentId}`
         );
       } else {
-        console.log("else..");
         await handleUploadFirestoreSubcollection(
           formValues,
           `Judete/${judetDoc.documentId}/Localitati`,
@@ -122,7 +116,6 @@ const Index = () => {
 
   const handleGetData = async () => {
     let data = await handleGetFirestore("Judete");
-    console.log("Data....", data);
     setData([...data]);
   };
 
@@ -134,7 +127,6 @@ const Index = () => {
         id
       );
 
-      console.log("course...found..", c);
 
       // Presupunând că `c` este un obiect care conține datele necesare,
       // actualizează state-ul `formValues` cu aceste date.
@@ -157,7 +149,6 @@ const Index = () => {
   useEffect(() => {
     handleGetData();
     if (id) {
-      console.log("id....", id);
       if (id.length > 0) {
         handleQuery();
       }

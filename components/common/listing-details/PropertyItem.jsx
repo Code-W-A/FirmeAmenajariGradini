@@ -2,16 +2,16 @@ const PropertyItem = () => {
   return (
     <ul className="mb0">
       <li className="list-inline-item">
-        <a href="#">Apartment</a>
+        <span>Apartment</span>
       </li>
       <li className="list-inline-item">
-        <a href="#">Beds: 4</a>
+        <span>Beds: 4</span>
       </li>
       <li className="list-inline-item">
-        <a href="#">Baths: 2</a>
+        <span>Baths: 2</span>
       </li>
       <li className="list-inline-item">
-        <a href="#">Sq Ft: 5280</a>
+        <span>Sq Ft: 5280</span>
       </li>
     </ul>
   );

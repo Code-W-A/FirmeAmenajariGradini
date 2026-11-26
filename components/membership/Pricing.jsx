@@ -51,9 +51,9 @@ const Pricing = () => {
               </ul>
             </div>
             <div className="pricing_footer">
-              <a className="btn pricing_btn btn-block" href="#">
+              <span className="btn pricing_btn btn-block">
                 Select Package
-              </a>
+              </span>
             </div>
           </div>
         </div>

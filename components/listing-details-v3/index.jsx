@@ -34,24 +34,24 @@ const index = () => {
                 <div className="spss float-start fn-400 mb20">
                   <ul className="mb0">
                     <li className="list-inline-item">
-                      <a href="#">
+                      <span>
                         <span className="flaticon-transfer-1"></span>
-                      </a>
+                      </span>
                     </li>
                     <li className="list-inline-item">
-                      <a href="#">
+                      <span>
                         <span className="flaticon-heart"></span>
-                      </a>
+                      </span>
                     </li>
                     <li className="list-inline-item">
-                      <a href="#">
+                      <span>
                         <span className="flaticon-share"></span>
-                      </a>
+                      </span>
                     </li>
                     <li className="list-inline-item">
-                      <a href="#">
+                      <span>
                         <span className="flaticon-printer"></span>
-                      </a>
+                      </span>
                     </li>
                   </ul>
                 </div>

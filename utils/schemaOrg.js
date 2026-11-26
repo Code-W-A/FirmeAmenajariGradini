@@ -1,7 +1,7 @@
 import { parseDateToISO } from "./timeUtils";
 import { replaceSpacesWithDashes } from "./strintText";
-import { slugifyFirma } from "./slugify";
 import { canonicalUrl } from "./siteUrl";
+import { buildCompanyPath } from "./companyPath";
 
 function isNonEmpty(v) {
   if (v == null) return false;
@@ -128,12 +128,16 @@ export function buildLocalBusinessLd(firma, _siteUrl, pagePath) {
   if (!firma) return null;
 
   const telephones = [firma.telefonUnu, firma.telefonDoi].filter(isNonEmpty);
+  const profileUrl = canonicalUrl(pagePath);
+  const businessUrl = isNonEmpty(firma.websiteUnu)
+    ? firma.websiteUnu
+    : profileUrl;
   const sameAs = [
     firma.facebook,
     firma.websiteUnu,
     firma.websiteDoi,
     firma.googlePlus,
-  ].filter(isNonEmpty);
+  ].filter((value) => isNonEmpty(value) && value !== businessUrl);
 
   const imageEntries = (firma.imagini?.imgs || [])
     .filter((img) => isNonEmpty(img?.finalUri))
@@ -195,9 +199,10 @@ export function buildLocalBusinessLd(firma, _siteUrl, pagePath) {
   return pick({
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
+    "@id": profileUrl,
     name: firma.siteName,
     description: firma.metaDescription,
-    url: canonicalUrl(pagePath),
+    url: businessUrl,
     image: imageEntries.length ? imageEntries : undefined,
     logo: firma.logo?.finalUri,
     telephone: telephones.length
@@ -226,9 +231,8 @@ export function buildItemListLd(firme, _siteUrl) {
 
   const items = firme
     .map((f, i) => {
-      const slug = f?.slug || slugifyFirma(f);
-      if (!slug) return null;
-      const path = `/firma/${slug}`;
+      const path = buildCompanyPath(f);
+      if (!path) return null;
       return pick({
         "@type": "ListItem",
         position: i + 1,

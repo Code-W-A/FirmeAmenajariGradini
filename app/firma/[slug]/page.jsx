@@ -1,104 +1,19 @@
-import SliderStyle from "@/components/listing-style/slider-style";
-import { notFound } from "next/navigation";
-import JsonLd, { BreadcrumbsJsonLd } from "@/components/common/JsonLd";
-import { buildLocalBusinessLd } from "@/utils/schemaOrg";
-import { canonicalUrl } from "@/utils/siteUrl";
-import { DEFAULT_OG_IMAGE } from "@/utils/seoDefaults";
-import {
-  getCompanyBySlug,
-  getCompanySlugs,
-  getCounties,
-  getCities,
-  getServiceCategories,
-} from "@/lib/sanity/queries";
+import { notFound, permanentRedirect } from "next/navigation";
+import { getCompanyBySlug } from "@/lib/sanity/queries";
+import { buildCompanyPath } from "@/utils/companyPath";
 
 export const revalidate = 60;
 
-async function getFirmaBySlug(slug) {
-  return getCompanyBySlug(slug);
-}
-
-export async function generateStaticParams() {
-  try {
-    return await getCompanySlugs();
-  } catch (err) {
-    console.error("generateStaticParams firma failed", err);
-    return [];
-  }
-}
-
-export async function generateMetadata({ params }) {
-  const firma = await getFirmaBySlug(params.slug);
-  const pagePath = `/firma/${params.slug}`;
-  const canonical = canonicalUrl(pagePath);
-  if (!firma) {
-    return {
-      title: "Firma negasita",
-      alternates: { canonical },
-      robots: { index: false, follow: false },
-    };
-  }
-  const title =
-    firma.metaTitle ||
-    `${firma.siteName} – firma amenajari gradini in ${firma.localitate || ""}`.trim();
-  const description =
-    firma.metaDescription ||
-    "Vezi detalii, contact si servicii pe FirmeAmenajariGradina.ro.";
-  const imageUrl = firma?.imagini?.imgs?.[0]?.finalUri;
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      url: canonical,
-      images: imageUrl ? [{ url: imageUrl }] : [DEFAULT_OG_IMAGE],
-    },
-    alternates: { canonical },
-  };
-}
-
-const Page = async ({ params }) => {
-  const firma = await getFirmaBySlug(params.slug);
+export default async function LegacyFirmaPage({ params }) {
+  const firma = await getCompanyBySlug(params.slug);
   if (!firma) {
     notFound();
   }
 
-  const [judete, categorii, localitati] = await Promise.all([
-    getCounties(),
-    getServiceCategories(),
-    getCities(),
-  ]);
-
-  const pagePath = `/firma/${params.slug}`;
-  const localBusinessLd = buildLocalBusinessLd(firma, null, pagePath);
-
-  const breadcrumbs = [{ name: "Acasa", path: "/" }];
-  if (firma?.judet) {
-    breadcrumbs.push({
-      name: firma.judet,
-      path: `/judet/${firma.judet.toLowerCase().replace(/ /g, "-")}`,
-    });
-  }
-  if (firma?.siteName) {
-    breadcrumbs.push({ name: firma.siteName, path: pagePath });
+  const destinationPath = buildCompanyPath(firma);
+  if (!destinationPath) {
+    notFound();
   }
 
-  return (
-    <>
-      <JsonLd data={localBusinessLd} />
-      <BreadcrumbsJsonLd items={breadcrumbs} />
-      <SliderStyle
-        params={params.slug}
-        judete={judete}
-        categorii={categorii}
-        localitati={localitati}
-        firme={[firma]}
-        renderMode="detail"
-        h1Title={firma.siteName}
-      />
-    </>
-  );
-};
-
-export default Page;
+  permanentRedirect(destinationPath);
+}

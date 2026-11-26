@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import AgencyDetails from "@/components/agency-details";
 import PromotionSection from "../listing-style/slider-style/PromotionSection";
-import { slugifyFirma } from "@/utils/slugify";
+import { buildCompanyPath } from "@/utils/companyPath";
 
 const FALLBACK_IMAGE = "/assets/categorii/amenajari-gradini-si-spatii-verzi.svg";
 
@@ -53,7 +53,7 @@ const FirmaItem = ({ firme = [], params }) => {
           <div className="tc_content p10">
             {/* <p className="text-thm">{item?.type}</p> */}
             <h3>
-              <Link href={`/firma/${item?.slug || slugifyFirma(item)}`}>
+              <Link href={buildCompanyPath(item) || "/amenajari-gradini"}>
                 {item?.siteName}
               </Link>
             </h3>

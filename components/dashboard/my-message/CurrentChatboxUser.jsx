@@ -3,7 +3,7 @@ import Image from "next/image";
 const CurrentChatboxUser = () => {
   return (
     <div className="user_heading">
-      <a href="#">
+      <span>
         <div className="wrap">
           <span className="contact-status online"></span>
           <Image
@@ -18,7 +18,7 @@ const CurrentChatboxUser = () => {
             <p className="preview">was online today at 11:43</p>
           </div>
         </div>
-      </a>
+      </span>
     </div>
   );
 };

@@ -138,24 +138,24 @@ const FeaturedItem = ({ firme }) => {
           <div className="thmb_cntnt">
             <ul className="tag mb0">
               <li className="list-inline-item">
-                <a href="#">Promovat</a>
+                <span>Promovat</span>
               </li>
               {/* <li className="list-inline-item">
-                  <a href="#" className="text-capitalize">
+                  <span className="text-capitalize">
                     {item?.featured}
-                  </a>
+                  </span>
                 </li> */}
             </ul>
             {/* <ul className="icon mb0">
                 <li className="list-inline-item">
-                  <a href="#">
+                  <span>
                     <span className="flaticon-transfer-1"></span>
-                  </a>
+                  </span>
                 </li>
                 <li className="list-inline-item">
-                  <a href="#">
+                  <span>
                     <span className="flaticon-heart"></span>
-                  </a>
+                  </span>
                 </li>
               </ul> */}
 
@@ -186,9 +186,9 @@ const FeaturedItem = ({ firme }) => {
             {/* <ul className="prop_details mb0">
                 {item?.itemDetails.map((val, i) => (
                   <li className="list-inline-item" key={i}>
-                    <a href="#">
+                    <span>
                       {val.name}: {val.number}
-                    </a>
+                    </span>
                   </li>
                 ))}
               </ul> */}

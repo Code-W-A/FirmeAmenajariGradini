@@ -17,6 +17,5 @@ export const handleGetUserInfo = async () => {
     });
     return userData;
   } catch (err) {
-    console.log("error...handleGetUserInfo...", err);
   }
 };

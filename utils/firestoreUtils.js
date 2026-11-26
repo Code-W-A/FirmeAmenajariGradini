@@ -48,15 +48,11 @@ export const handleUpdateFirestore = async (location, updatedData) => {
 
     await updateDoc(ref, newData);
   } catch (err) {
-    console.log("Error on...handleUpdateFirestore...", err);
+    console.error("Error on...handleUpdateFirestore...", err);
   }
 };
 export const handleUploadFirestore = async (data, location) => {
   try {
-    console.log("test.infor in handle upload firestore...");
-    console.log(location);
-    console.log(data);
-
     // Crează un nou document în colecție cu un ID generat automat
     const docRef = doc(collection(db, location));
 
@@ -80,10 +76,9 @@ export const handleUploadFirestore = async (data, location) => {
     // Face upload cu noul obiect de date care include ID-ul documentului
     await setDoc(docRef, newData);
 
-    console.log(`Documentul cu ID-ul ${docRef.id} a fost adăugat cu succes.`);
     return newData;
   } catch (err) {
-    console.log("Eroare la handleUploadFirestore...", err);
+    console.error("Eroare la handleUploadFirestore...", err);
   }
 };
 
@@ -94,7 +89,6 @@ export const handleUploadFirestoreSubcollection = async (
   collectionId,
   subcollectionLocation
 ) => {
-  console.log("create subcollection history...", data);
   try {
     const localitati = await handleGetSubcollections(subcollectionLocation); // Presupunem că returnează un array de obiecte
 
@@ -115,9 +109,7 @@ export const handleUploadFirestoreSubcollection = async (
     };
     await setDoc(docRef, newData); // Actualizează documentul cu noul set de date, dacă este necesar
 
-    console.log(`Document adăugat în subcolecție cu ID-ul: ${docRef.id}`);
   } catch (err) {
-    console.log("Error on...handleUploadFirestoreSubcollection...", err);
   }
 };
 
@@ -126,7 +118,6 @@ export const handleUpdateFirestoreSubcollection = async (
   updatedData,
   location
 ) => {
-  console.log("create subcollection history...", updatedData);
   try {
     //current date
     const dateTime = getCurrentDateTime();
@@ -141,7 +132,6 @@ export const handleUpdateFirestoreSubcollection = async (
 
     await updateDoc(ref, newData);
   } catch (err) {
-    console.log("Error on...handleUploadFirestoreSubcollection...", err);
   }
 };
 
@@ -156,7 +146,6 @@ export const handleDeleteFirestoreAccount = async (
       handleDeleteAccount(currentPassword);
     });
   } catch (err) {
-    console.log("Error on...handleDeleteFirestore...", err);
   }
 };
 
@@ -188,7 +177,6 @@ export const handleDeleteFirestoreData = async (
   locationToGet = null
 ) => {
   try {
-    console.log("STart....delete...");
     const ref = doc(db, locationToDelete);
     await deleteDoc(ref);
 
@@ -221,7 +209,6 @@ export const handleDeleteFirestoreData = async (
     // Dacă getNewData este false, nu returna nimic sau returnează o valoare specifică
     return null; // Sau orice altă valoare semnificativă pentru cazul tău
   } catch (err) {
-    console.log("Error on...handleDeleteFirestore...", err);
     // Returnează null sau o valoare de eroare specifică în caz de eroare
     return null;
   }
@@ -236,7 +223,6 @@ export const handleDeleteFirestoreSubcollectionData = async (
   itemToDelete
 ) => {
   try {
-    console.log("STart....delete...");
     const ref = doc(db, locationToDelete);
     await deleteDoc(ref);
 
@@ -247,7 +233,6 @@ export const handleDeleteFirestoreSubcollectionData = async (
       // Sortează datele în ordinea crescătoare a ID-urilor
       data.sort((a, b) => a.id - b.id);
 
-      console.log("test...", data);
 
       let updatedData = []; // Inițializează un array gol pentru a stoca datele actualizate
 
@@ -278,7 +263,6 @@ export const handleDeleteFirestoreSubcollectionData = async (
     // Dacă getNewData este false, nu returna nimic sau returnează o valoare specifică
     return null; // Sau orice altă valoare semnificativă pentru cazul tău
   } catch (err) {
-    console.log("Error on...handleDeleteFirestore...", err);
     // Returnează null sau o valoare de eroare specifică în caz de eroare
     return null;
   }
@@ -319,18 +303,15 @@ export const handleGetSubcollections = async (subcollection) => {
 };
 
 export const handleGetFirestoreSingleArrayData = async (location) => {
-  console.log("Start...take from firestore array single", location);
   try {
     let arr = []; // Specificați tipul de obiecte pe care îl conține matricea
     const querySnapshot = await getDocs(collection(db, location));
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, ` ${location} => `, doc.data());
       arr = doc.data();
     });
     return arr;
   } catch (err) {
-    console.log("Error at handleGetFirestoreSingleArrayData...", err);
     return [];
   }
 };
@@ -361,7 +342,6 @@ export const handleQueryFirestore = async (
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
       arr.push(doc.data()); // Dacă dorești să adaugi un anumit câmp, specifică, de exemplu: doc.data().numeCamp
     });
   } catch (error) {
@@ -408,7 +388,6 @@ export const handleQueryDoubleParam = async (
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
     // arr.push(doc.data().data);
     arr.push(doc.data());
   });
@@ -434,7 +413,6 @@ export const handleQueryTripleParam = async (
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
     // arr.push(doc.data().data);
     arr.push(doc.data());
   });
@@ -442,15 +420,12 @@ export const handleQueryTripleParam = async (
 };
 
 export const handleQueryRandom = async (location, id) => {
-  console.log("start query firestore location...", location);
-  console.log("start query firestore id...", id);
   let obj = {}; // Specificați tipul de obiecte pe care îl conține matricea
   const q = query(collection(db, location), where("id", "==", id));
 
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
     // arr.push(doc.data().data);
     obj = { ...doc.data() };
   });
@@ -464,7 +439,6 @@ export const handlePaginateFirestore = (location) => {
 };
 
 export const uploadJudete = async (jd) => {
-  console.log("Start upload judete...");
   for (let i = 0; i < jd.length; i++) {
     const judetDoc = doc(collection(db, "Judete"));
     const judetData = {

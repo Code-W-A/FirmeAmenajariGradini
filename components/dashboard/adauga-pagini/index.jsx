@@ -61,7 +61,6 @@ const Index = () => {
   };
 
   const handleSubmit = async () => {
-    console.log("Submitting form with values:", formValues);
     try {
       if (isEdit) {
         await handleUpdateFirestore(`Pagini/${documentId}`, formValues);
@@ -106,11 +105,9 @@ const Index = () => {
 
   const handleQuery = async () => {
     const numericId = parseInt(id, 10); // Convertește `id` din string în număr întreg.
-    console.log("id....", typeof numericId);
 
     try {
       const c = await handleQueryFirestore("Pagini", "id", numericId);
-      console.log("course...found..", c);
 
       // Presupunând că `c` este un obiect care conține datele necesare,
       // actualizează state-ul `formValues` cu aceste date.
@@ -136,7 +133,6 @@ const Index = () => {
   };
 
   useEffect(() => {
-    console.log("test...");
     if (id) {
       if (id.length > 0) {
         handleQuery();

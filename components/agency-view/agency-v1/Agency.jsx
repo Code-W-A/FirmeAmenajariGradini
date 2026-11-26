@@ -33,7 +33,7 @@ const Agency = () => {
               <ul className="tag mb0">
                 <li className="list-inline-item dn"></li>
                 <li className="list-inline-item">
-                  <a href="#">{item.noOfListings} Listings</a>
+                  <span>{item.noOfListings} Listings</span>
                 </li>
               </ul>
             </div>
@@ -48,16 +48,16 @@ const Agency = () => {
               <p className="text-thm">{item.type}</p>
               <ul className="prop_details mb0">
                 <li>
-                  <a href="#">Office: {item.office}</a>
+                  <span>Office: {item.office}</span>
                 </li>
                 <li>
-                  <a href="#">Mobile: {item.mobile}</a>
+                  <span>Mobile: {item.mobile}</span>
                 </li>
                 <li>
-                  <a href="#">Fax: {item.fax}</a>
+                  <span>Fax: {item.fax}</span>
                 </li>
                 <li>
-                  <a href="#">Email: {item.email}</a>
+                  <span>Email: {item.email}</span>
                 </li>
               </ul>
             </div>

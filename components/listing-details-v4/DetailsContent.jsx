@@ -111,12 +111,12 @@ const DetailsContent = () => {
             <ul className="review_star_list mb0 pl10">
               <Ratings />
             </ul>
-            <a className="tr_outoff pl10" href="#">
+            <span className="tr_outoff pl10">
               ( 4.5 out of 5 )
-            </a>
-            <a className="write_review float-end fn-xsd" href="#">
+            </span>
+            <span className="write_review float-end fn-xsd">
               Write a Review
-            </a>
+            </span>
           </div>
           {/* End .total_review */}
           <Comments />

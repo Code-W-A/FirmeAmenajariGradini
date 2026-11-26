@@ -55,7 +55,7 @@ const Footer = () => {
                 }}
                 navigare={"mailto:contact@domain.ro"}
               >
-                <i class="fa fa-envelope mr7"></i> E-mail
+                <i className="fa fa-envelope mr7"></i> E-mail
               </Button>
               <Button
                 className="btnSecondary btnGeneralFooter"
@@ -65,7 +65,7 @@ const Footer = () => {
                 }}
                 navigare={"contact"}
               >
-                <i class="fa fa-paper-plane mr7"></i> Contact
+                <i className="fa fa-paper-plane mr7"></i> Contact
               </Button>
             </div>
           </div>

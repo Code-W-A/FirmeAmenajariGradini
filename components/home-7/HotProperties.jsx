@@ -20,26 +20,26 @@ const HotProperties = () => {
                 <ul className="tag mb0">
                   {["Featured", "For Rent"].map((val, i) => (
                     <li className="list-inline-item" key={i}>
-                      <a href="#">{val}</a>
+                      <span>{val}</span>
                     </li>
                   ))}
                 </ul>
                 <ul className="icon mb0">
                   <li className="list-inline-item">
-                    <a href="#">
+                    <span>
                       <span className="flaticon-transfer-1"></span>
-                    </a>
+                    </span>
                   </li>
                   <li className="list-inline-item">
-                    <a href="#">
+                    <span>
                       <span className="flaticon-heart"></span>
-                    </a>
+                    </span>
                   </li>
                 </ul>
-                <a className="fp_price" href="#">
+                <span className="fp_price">
                   $2313231
                   <small>/mo</small>
-                </a>
+                </span>
               </div>
             </div>
             <div className="details">
@@ -69,9 +69,9 @@ const HotProperties = () => {
                     },
                   ].map((val, i) => (
                     <li className="list-inline-item" key={i}>
-                      <a href="#">
+                      <span>
                         {val.name}: {val.number}
-                      </a>
+                      </span>
                     </li>
                   ))}
                 </ul>

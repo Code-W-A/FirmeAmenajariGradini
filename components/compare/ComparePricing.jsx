@@ -10,9 +10,9 @@ const ComparePricing = () => {
             <li>
               <div className="membership_header">
                 <div className="thumb">
-                  <a href="#">
+                  <span>
                     <span className="flaticon-close"></span>
-                  </a>
+                  </span>
                   <Image
                     width={260}
                     height={180}
@@ -32,27 +32,27 @@ const ComparePricing = () => {
               </div>
             </li>
             <li>
-              <a href="#">{item.city}</a>
+              <span>{item.city}</span>
             </li>
             <li>
-              <a href="#">{item.beds}</a>
+              <span>{item.beds}</span>
             </li>
             <li>
-              <a href="#">{item.rooms}</a>
+              <span>{item.rooms}</span>
             </li>
             <li>
-              <a href="#">{item.garage}</a>
+              <span>{item.garage}</span>
             </li>
             <li>
-              <a href="#">{item.buildYear}</a>
+              <span>{item.buildYear}</span>
             </li>
             <li>
-              <a href="#">{item.laundryRoom}</a>
+              <span>{item.laundryRoom}</span>
             </li>
             <li>
-              <a className="btn pricing_btn" href="#">
+              <span className="btn pricing_btn">
                 {item.status}
-              </a>
+              </span>
             </li>
           </ul>
         </li>

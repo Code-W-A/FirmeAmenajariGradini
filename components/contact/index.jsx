@@ -10,7 +10,7 @@ import BreadCrumbBanner from "./BreadCrumbBanner";
 import Form from "./Form";
 import SidebarListings from "../agency-details/SidebarListings";
 
-const index = () => {
+const index = ({ hasEditorialHeading }) => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -23,7 +23,7 @@ const index = () => {
       <PopupSignInUp />
 
       {/* <!-- Inner Page Breadcrumb --> */}
-      <BreadCrumbBanner />
+      <BreadCrumbBanner hasEditorialHeading={hasEditorialHeading} />
 
       {/* <!-- Our Contact --> */}
       <section className="our-contact pb0 bgc-f7">

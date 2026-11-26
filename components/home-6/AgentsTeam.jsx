@@ -86,9 +86,9 @@ const AgentsTeam = () => {
                 </h4>
                 <p>
                   {item.type}
-                  <a className="float-end" href="#">
+                  <span className="float-end">
                     {item.ratings} <i className="fa fa-star color-golden"></i>
-                  </a>
+                  </span>
                 </p>
               </div>
               {/* End .details */}

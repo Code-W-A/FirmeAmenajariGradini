@@ -1,37 +1,24 @@
-import {
-  getArticles,
-  getCounties,
-  getLocalLandingPageSlugs,
-  getPublishedCompanies,
-  getSiteSettings,
-  getStaticPages,
-} from "@/lib/sanity/queries";
+import { getSitemapContent } from "@/lib/sanity/queries";
+import { matchRedirect, STATIC_REDIRECTS } from "@/lib/sanity/redirects";
 import { canonicalUrl } from "@/utils/siteUrl";
+import { isIndexablePage, landingPageSeo, staticPageSeo } from "@/utils/seoIndexing";
+import { buildCompanyPath } from "@/utils/companyPath";
+import { companyListPath, companyPageCount } from "@/utils/companyList";
+import { isReservedSlug } from "@/utils/reservedPaths";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
-const STATIC_PUBLIC_ROUTES = [
-  "/",
-  "/amenajari-gradini",
-  "/cauta",
-  "/blog",
-  "/contact",
-  "/cum-functioneaza",
-  "/despre-noi",
-  "/inscrie-firma",
-  "/politica-confidentialitate",
-  "/politica-cookie",
-  "/service",
-  "/terms",
+const FIXED_ROUTES = ["/", "/amenajari-gradini", "/blog"];
+const CMS_STATIC_SLUGS = [
+  "contact",
+  "cum-functioneaza",
+  "despre-noi",
+  "inscrie-firma",
+  "politica-confidentialitate",
+  "politica-cookie",
+  "service",
+  "terms",
 ];
-
-function isIndexable(item) {
-  return item?.seo?.noIndex !== true;
-}
-
-function hasSlug(item, slugKey = "slug") {
-  return Boolean(item?.[slugKey]);
-}
 
 function lastModified(...dates) {
   for (const date of dates) {
@@ -39,85 +26,52 @@ function lastModified(...dates) {
     const parsed = new Date(date);
     if (!Number.isNaN(parsed.getTime())) return parsed.toISOString();
   }
-  return undefined;
-}
-
-function entry(path, lastModifiedDate, imageUrl) {
-  const item = {
-    url: canonicalUrl(path),
-  };
-  if (lastModifiedDate) item.lastModified = lastModifiedDate;
-  if (imageUrl) item.image = { url: imageUrl };
-  return item;
-}
-
-function dedupeEntries(entries) {
-  const byUrl = new Map();
-
-  for (const item of entries) {
-    const existing = byUrl.get(item.url);
-    if (!existing || (!existing.lastModified && item.lastModified)) {
-      byUrl.set(item.url, item);
-    }
-  }
-
-  return Array.from(byUrl.values());
 }
 
 export default async function sitemap() {
-  const [companies, counties, landingPages, articles, staticPages, settings] =
-    await Promise.all([
-      getPublishedCompanies({ limit: 10000 }),
-      getCounties(),
-      getLocalLandingPageSlugs(),
-      getArticles({ limit: 10000 }),
-      getStaticPages(),
-      getSiteSettings(),
-    ]);
-  const staticPagesBySlug = new Map(
-    staticPages.filter((page) => hasSlug(page)).map((page) => [page.slug, page])
-  );
-  const staticRouteEntries = STATIC_PUBLIC_ROUTES.flatMap((path) => {
-    const slug = path === "/" ? null : path.slice(1);
-    const sanityPage = slug ? staticPagesBySlug.get(slug) : null;
+  const { staticPages, counties, landings, companies, companyCount, articles, redirects } =
+    await getSitemapContent();
+  const staticPagesBySlug = new Map(staticPages.map((page) => [page.slug, page]));
+  const redirectRules = [...STATIC_REDIRECTS, ...redirects];
+  const entries = new Map();
 
-    if (sanityPage?.seo?.noIndex) return [];
+  function add(path, { seo, date, image } = {}) {
+    if (!isIndexablePage(path, seo) || matchRedirect(redirectRules, path)) return;
+    const url = canonicalUrl(path);
+    if (entries.has(url)) return;
+    entries.set(url, {
+      url,
+      ...(date && { lastModified: date }),
+      ...(image && { images: [image] }),
+    });
+  }
 
-    return [
-      entry(path, lastModified(sanityPage?._updatedAt, settings?._updatedAt)),
-    ];
+  FIXED_ROUTES.forEach((path) => add(path));
+  CMS_STATIC_SLUGS.forEach((slug) => {
+    const page = staticPagesBySlug.get(slug);
+    add(`/${slug}`, { seo: staticPageSeo(slug, page), date: lastModified(page?._updatedAt) });
   });
 
-  return dedupeEntries([
-    ...staticRouteEntries,
-    ...staticPages
-      .filter((page) => hasSlug(page) && isIndexable(page))
-      .map((page) => entry(`/${page.slug}`, lastModified(page._updatedAt))),
-    ...counties
-      .filter((county) => hasSlug(county) && isIndexable(county))
-      .map((county) =>
-        entry(`/judet/${county.slug}`, lastModified(county._updatedAt))
-      ),
-    ...landingPages
-      .filter((page) => hasSlug(page, "clinici") && isIndexable(page))
-      .map((page) => entry(`/${page.clinici}`, lastModified(page._updatedAt))),
-    ...companies
-      .filter((company) => hasSlug(company) && isIndexable(company))
-      .map((company) =>
-        entry(
-          `/firma/${company.slug}`,
-          lastModified(company._updatedAt),
-          company?.imagini?.imgs?.[0]?.finalUri
-        )
-      ),
-    ...articles
-      .filter((article) => hasSlug(article) && isIndexable(article))
-      .map((article) =>
-        entry(
-          `/blog/${article.slug}`,
-          lastModified(article.publishedAt, article._updatedAt),
-          article?.image?.finalUri
-        )
-      ),
-  ]);
+  counties.forEach(({ slug, seo, _updatedAt }) => {
+    add(`/judet/${slug}`, { seo, date: lastModified(_updatedAt) });
+  });
+  landings.forEach((page) => {
+    if (!isReservedSlug(page.slug)) {
+      add(`/${page.slug}`, { seo: landingPageSeo(page), date: lastModified(page._updatedAt) });
+    }
+  });
+  companies.forEach((company) => {
+    const path = buildCompanyPath(company);
+    if (path?.endsWith(`/${company.slug}`)) {
+      add(path, { seo: company.seo, date: lastModified(company._updatedAt), image: company.image });
+    }
+  });
+  for (let page = 2; page <= companyPageCount(companyCount); page++) {
+    add(companyListPath(page));
+  }
+  articles.forEach(({ slug, seo, _updatedAt, publishedAt, image }) => {
+    add(`/blog/${slug}`, { seo, date: lastModified(_updatedAt, publishedAt), image });
+  });
+
+  return [...entries.values()];
 }

@@ -40,42 +40,42 @@ const index = () => {
               <div className="main_blog_post_content">
                 <div className="mbp_thumb_post">
                   <div className="blog_sp_tag">
-                    <a href="#">Construction</a>
+                    <span>Construction</span>
                   </div>
                   <h3 className="blog_sp_title">
                     Redfin Ranks the Most Competitive Neighborhoods of 2020
                   </h3>
                   <ul className="blog_sp_post_meta">
                     <li className="list-inline-item">
-                      <a href="#">
+                      <span>
                         <Image
                           width={40}
                           height={40}
                           src="/assets/images/property/pposter1.png"
                           alt="pposter1.png"
                         />
-                      </a>
+                      </span>
                     </li>
                     <li className="list-inline-item">
-                      <a href="#">Ali Tufan</a>
+                      <span>Ali Tufan</span>
                     </li>
                     <li className="list-inline-item">
                       <span className="flaticon-calendar"></span>
                     </li>
                     <li className="list-inline-item">
-                      <a href="#">January 16, 2020</a>
+                      <span>January 16, 2020</span>
                     </li>
                     <li className="list-inline-item">
                       <span className="flaticon-view"></span>
                     </li>
                     <li className="list-inline-item">
-                      <a href="#"> 341 views</a>
+                      <span> 341 views</span>
                     </li>
                     <li className="list-inline-item">
                       <span className="flaticon-chat"></span>
                     </li>
                     <li className="list-inline-item">
-                      <a href="#">15</a>
+                      <span>15</span>
                     </li>
                   </ul>
                   <div className="thumb">
@@ -174,12 +174,12 @@ const index = () => {
                       <ul className="review_star_list mb0 pl10">
                         <Ratings />
                       </ul>
-                      <a className="tr_outoff pl10" href="#">
+                      <span className="tr_outoff pl10">
                         ( 4.5 out of 5 )
-                      </a>
-                      <a className="write_review float-end fn-xsd" href="#">
+                      </span>
+                      <span className="write_review float-end fn-xsd">
                         Write a Review
-                      </a>
+                      </span>
                     </div>
                     {/* End .total_review */}
 

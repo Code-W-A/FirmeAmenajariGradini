@@ -1,13 +1,21 @@
 const DEFAULT_SITE_URL = "https://www.firmeamenajarigradina.ro";
-const CANONICAL_HOSTNAME = "www.firmeamenajarigradina.ro";
-const ROOT_HOSTNAME = "firmeamenajarigradina.ro";
 
-function normalizeSiteUrl(value) {
-  const url = String(value || "").trim() || DEFAULT_SITE_URL;
-  return url.replace(/\/+$/, "");
+export const SITE_URL = new URL(
+  process.env.NEXT_PUBLIC_SITE_URL?.trim() || DEFAULT_SITE_URL
+).origin;
+
+const siteHostname = new URL(SITE_URL).hostname;
+const publicHostname = siteHostname.replace(/^www\./, "");
+const productionHostnames = new Set([
+  "firmeamenajarigradina.ro",
+  "www.firmeamenajarigradina.ro",
+  publicHostname,
+  `www.${publicHostname}`,
+]);
+
+export function isSiteHostname(hostname) {
+  return productionHostnames.has(hostname.toLowerCase());
 }
-
-export const SITE_URL = normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 
 export function absoluteUrl(pathOrUrl) {
   if (!pathOrUrl) return SITE_URL;
@@ -20,25 +28,11 @@ export function absoluteUrl(pathOrUrl) {
 }
 
 export function canonicalUrl(pathOrUrl) {
-  if (!pathOrUrl) return DEFAULT_SITE_URL;
-
-  const value = String(pathOrUrl).trim();
-
-  if (/^https?:\/\//i.test(value)) {
-    try {
-      const url = new URL(value);
-      const hostname = url.hostname.toLowerCase();
-
-      if (hostname === ROOT_HOSTNAME || hostname === CANONICAL_HOSTNAME) {
-        return `${DEFAULT_SITE_URL}${url.pathname}${url.search}`;
-      }
-
-      return value;
-    } catch {
-      return absoluteUrl(value);
-    }
+  const value = String(pathOrUrl || "/").trim();
+  const url = new URL(value, SITE_URL);
+  if (isSiteHostname(url.hostname)) {
+    return `${SITE_URL}${url.pathname.replace(/\/+$/, "") || "/"}${url.search}`;
   }
 
-  const path = value.startsWith("/") ? value : `/${value}`;
-  return `${DEFAULT_SITE_URL}${path}`;
+  return `${url.origin}${url.pathname}${url.search}`;
 }

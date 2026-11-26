@@ -1,5 +1,5 @@
 import ListSearchJudete from "../common/ListSearchJudete";
-import Pagination from "../common/blog/Pagination";
+import PortableContent from "@/components/sanity/PortableContent";
 import CopyrightFooter from "../common/footer/CopyrightFooter";
 import Footer from "../common/footer/Footer";
 import GlobalHeroFilter from "../common/GlobalHeroFilter";
@@ -18,10 +18,20 @@ import CallToAction from "../common/CallToAction";
 import SidebarListing from "../common/listing/SidebarListing";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import FirmaItem from "./FirmaItem";
+import InternalLinksSection from "@/components/common/InternalLinksSection";
 
 import { capitalizeFirstLetter } from "@/utils/strintText";
 
-const index = async ({ data, judet, params, searchParams, h1Title }) => {
+const index = async ({
+  data,
+  judet,
+  params,
+  searchParams,
+  h1Title,
+  internalLinks = [],
+  countySlug,
+  landingRoutes = [],
+}) => {
   const pageH1 =
     h1Title ||
     `Firme de amenajari gradini si spatii verzi in ${capitalizeFirstLetter(
@@ -72,8 +82,9 @@ const index = async ({ data, judet, params, searchParams, h1Title }) => {
                 {/* End home-text */}
                 <ListSearchJudete
                   className="mt40"
-                  judet={judet}
                   localitati={data.localitati}
+                  countySlug={countySlug || params?.id}
+                  landingRoutes={landingRoutes}
                 />
               </div>
             </div>
@@ -88,19 +99,12 @@ const index = async ({ data, judet, params, searchParams, h1Title }) => {
           <div className="row pt30">
             <div className="col-md-12 col-lg-12">
               <div className="row">
-                <FirmaItem params={params} firme={data.firms} />
+                {data.firms.length ? (
+                  <FirmaItem params={params} firme={data.firms} />
+                ) : (
+                  <p>Momentan nu sunt firme listate pentru această selecție.</p>
+                )}
               </div>
-              {/* End .row */}
-
-              <div className="row">
-                <div className="col-lg-12 mt20">
-                  <div className="mbp_pagination">
-                    <Pagination />
-                  </div>
-                </div>
-                {/* End paginaion .col */}
-              </div>
-              {/* End .row */}
             </div>
             {/* End  .col */}
             {/* <div className="col-md-4 col-lg-4">
@@ -113,6 +117,27 @@ const index = async ({ data, judet, params, searchParams, h1Title }) => {
           {/* End .row */}
         </div>
       </section>
+
+      {(data.county.intro || data.county.content?.length || data.county.faq?.length) && (
+        <section className="container py-4">
+          <h2>Amenajări de grădini în {judet}</h2>
+          {data.county.intro && <p>{data.county.intro}</p>}
+          <PortableContent value={data.county.content} />
+          {data.county.faq?.filter(({ question, answer }) => question && answer).map(
+            ({ _key, question, answer }) => (
+              <div key={_key || question}>
+                <h3>{question}</h3>
+                <p>{answer}</p>
+              </div>
+            )
+          )}
+        </section>
+      )}
+
+      <InternalLinksSection
+        title={`Pagini locale in ${capitalizeFirstLetter(judet || "")}`}
+        links={internalLinks}
+      />
 
       {/* <!-- Start Call to Action --> */}
 

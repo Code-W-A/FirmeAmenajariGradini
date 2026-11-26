@@ -14,7 +14,7 @@ const PropertyLocation = () => {
           </div>
         </div>
         <div className="overlay_icon">
-          <a href="#">
+          <span>
             <Image
               width={40}
               height={45}
@@ -22,7 +22,7 @@ const PropertyLocation = () => {
               src="/assets/images/header-logo.png"
               alt="header-logo.png"
             />
-          </a>
+          </span>
         </div>
       </div>
     </>

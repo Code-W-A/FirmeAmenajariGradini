@@ -5,11 +5,9 @@ const SidebarListings = ({ firma }) => {
     <div className="sidebar_listing_grid1">
       <div className="sidebar_listing_list">
         <div className="sidebar_advanced_search_widget">
-          <h4 className="fz40 ml5">Înscrie clinică</h4>
+          <h2 className="fz40 ml5">Formular de înscriere</h2>
           <p className="fz20 ml5">
-            Inscrie clinica Inscrie-te pe cel mai vizitat portal din domeniul
-            Medical. Beneficiaza de o promovare full service care iti va aduce
-            mai multi clienti!
+            Înscrie firma ta de amenajări grădini în director ca să poată fi găsită de clienții din zona ta.
           </p>
           <p className="fz20 ml5">
             Acest formular colecteaza numele, telefonul si e-mailul tau pentru a

@@ -17,7 +17,7 @@ const FavouritProducts = () => {
         <div className="thmb_cntnt">
           <ul className="tag mb0">
             <li className="list-inline-item">
-              <a href="#">For Rent</a>
+              <span>For Rent</span>
             </li>
           </ul>
         </div>
@@ -32,10 +32,10 @@ const FavouritProducts = () => {
           <p>
             <span className="flaticon-placeholder"></span> {item.location}
           </p>
-          <a className="fp_price text-thm" href="#">
+          <span className="fp_price text-thm">
             ${item.price}
             <small>/mo</small>
-          </a>
+          </span>
         </div>
       </div>
       {/* End details */}
@@ -47,9 +47,9 @@ const FavouritProducts = () => {
           data-placement="top"
           title="Delete"
         >
-          <a href="#">
+          <span>
             <span className="flaticon-garbage"></span>
-          </a>
+          </span>
         </li>
       </ul>
       {/* view_edit_delete_list */}

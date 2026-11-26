@@ -15,10 +15,6 @@ export function validateEmail(email) {
 }
 
 export const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  console.log(lat1);
-  console.log(lon1);
-  console.log(lat2);
-  console.log(lon2);
   const R = 6371e3; // Raza Pământului în metri
   const φ1 = (lat1 * Math.PI) / 180; // φ, λ în radiani
   const φ2 = (lat2 * Math.PI) / 180;
@@ -46,7 +42,6 @@ export const formatPathname = (pathname) => {
   const formattedSegments = segments.map((segment) => {
     // Decodifică componenta URL
     const decodedSegment = replaceDashesWithSpaces(segment);
-    console.log("decodedSegment....", decodedSegment);
     // Înlocuiește `-` cu spațiu și capitalizează fiecare cuvânt
     return decodedSegment
       .split("-")
@@ -77,6 +72,7 @@ export const filtrareOferte = (oferte, searchQueryParteneri) => {
 
   // Funcție care verifică dacă toate cuvintele de căutare apar în text
   const matchesSearch = (text) => {
+    if (typeof text !== "string" || !text) return false;
     const lowercasedText = text.toLowerCase();
     return searchTerms.every((term) => lowercasedText.includes(term));
   };

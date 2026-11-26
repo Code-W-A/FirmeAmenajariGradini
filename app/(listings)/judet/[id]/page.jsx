@@ -4,13 +4,20 @@ import {
   getCompaniesByCountySlug,
   getCountyBySlug,
   getCountySlugs,
+  getLandingPageRoutes,
+  getLandingPagesByCountySlug,
 } from "@/lib/sanity/queries";
 import { notFound } from "next/navigation";
 import { filtrareOferte } from "@/utils/commonUtils";
 import JsonLd, { BreadcrumbsJsonLd } from "@/components/common/JsonLd";
 import { buildFaqPageLd, buildItemListLd } from "@/utils/schemaOrg";
-import { canonicalUrl } from "@/utils/siteUrl";
+import { seoCanonical } from "@/utils/seoIndexing";
 import { DEFAULT_OG_IMAGE } from "@/utils/seoDefaults";
+import { pageTitle } from "@/utils/seoTitle";
+import {
+  createInternalLinks,
+  linksFromLandingPages,
+} from "@/utils/internalLinks";
 
 export const revalidate = 60; // revalidate at most every minute , hour at 3600
 
@@ -18,59 +25,57 @@ export async function generateStaticParams() {
   return await getCountySlugs();
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params, searchParams }) {
   const county = await getCountyBySlug(params.id);
   const judetParam = county?.name || params.id;
   const title = `Specialisti in peisagistica si gradinarit ${judetParam}`;
   const description =
     county?.seo?.metaDescription ||
     `Firme serioase de amenajari gradini si spatii verzi din judetul ${judetParam}. Vezi peisagistii recomandati si cere oferta acum.`;
-  const canonical = canonicalUrl(county?.seo?.canonical || `/judet/${params.id}`);
+  const canonical = seoCanonical(`/judet/${params.id}`, county?.seo);
   return {
-    title: county?.seo?.metaTitle || title,
+    title: pageTitle(county?.seo?.metaTitle || title),
     description,
     openGraph: {
-      title,
+      title: county?.seo?.metaTitle || title,
       description,
       url: canonical,
-      images: [DEFAULT_OG_IMAGE],
+      images: county?.seo?.socialImage?.finalUri
+        ? [
+            {
+              url: county.seo.socialImage.finalUri,
+              width: county.seo.socialImage.width || 1200,
+              height: county.seo.socialImage.height || 630,
+              alt: county.seo.socialImage.alt || title,
+            },
+          ]
+        : [DEFAULT_OG_IMAGE],
     },
     alternates: {
       canonical,
     },
-    robots: county?.seo?.noIndex ? { index: false, follow: false } : undefined,
+    robots: (county?.seo?.noIndex || searchParams?.slug)
+      ? { index: false, follow: true }
+      : undefined,
   };
 }
 
-export async function getServerData(params, searchParams) {
-  try {
-    const [county, localitati, firms] = await Promise.all([
-      getCountyBySlug(params.id),
-      getCitiesByCountySlug(params.id),
-      getCompaniesByCountySlug(params.id),
-    ]);
-    let firmeFinal = firms;
-    if (searchParams) {
-      firmeFinal = await filtrareOferte(firms, searchParams);
-    }
-
-    return { county, localitati, firms: firmeFinal };
-  } catch (error) {
-    console.error("Failed to fetch data....:", error);
-    return { county: null, localitati: [], firms: [] };
-  }
-}
-
 const index = async ({ params, searchParams }) => {
-  if (params.id === "favicon.ico") {
-    return null;
-  }
+  const county = await getCountyBySlug(params.id);
+  if (!county) notFound();
 
-  const data = await getServerData(params, searchParams.slug);
-
-  if (!data.county) {
-    notFound();
-  }
+  const [localitati, firms, landingPages, landingRoutes] = await Promise.all([
+    getCitiesByCountySlug(params.id),
+    getCompaniesByCountySlug(params.id),
+    getLandingPagesByCountySlug(params.id),
+    getLandingPageRoutes(),
+  ]);
+  const searchKey = searchParams?.slug;
+  const data = {
+    county,
+    localitati,
+    firms: searchKey ? await filtrareOferte(firms, searchKey) : firms,
+  };
 
   const judetParam = data.county.name;
   const h1Title = `Firme de amenajari gradini si spatii verzi in ${judetParam}`;
@@ -80,11 +85,15 @@ const index = async ({ params, searchParams }) => {
     "@type": "WebPage",
     name: `Specialisti in peisagistica si gradinarit ${judetParam}`,
     description: `Firme serioase de amenajari gradini si spatii verzi din judetul ${judetParam}.`,
-    url: canonicalUrl(`/judet/${params.id}`),
+    url: seoCanonical(`/judet/${params.id}`, county.seo),
   };
 
   const itemListLd = buildItemListLd(data.firms);
   const faqPageLd = buildFaqPageLd(data.county.faq, `/judet/${params.id}`);
+  const internalLinks = createInternalLinks(
+    [linksFromLandingPages(landingPages, landingPages.length)],
+    `/judet/${params.id}`
+  );
 
   return (
     <>
@@ -104,7 +113,10 @@ const index = async ({ params, searchParams }) => {
         judet={judetParam}
         h1Title={h1Title}
         params={params}
-        searchParams={searchParams.slug}
+        searchParams={searchKey}
+        internalLinks={internalLinks}
+        countySlug={params.id}
+        landingRoutes={landingRoutes}
       />
     </>
   );

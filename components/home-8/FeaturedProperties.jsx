@@ -49,20 +49,20 @@ const FeaturedProperties = () => {
                   <ul className="tag mb0">
                     {item.saleTag.map((val, i) => (
                       <li className="list-inline-item" key={i}>
-                        <a href="#">{val}</a>
+                        <span>{val}</span>
                       </li>
                     ))}
                   </ul>
                   <ul className="icon mb0">
                     <li className="list-inline-item">
-                      <a href="#">
+                      <span>
                         <span className="flaticon-transfer-1"></span>
-                      </a>
+                      </span>
                     </li>
                     <li className="list-inline-item">
-                      <a href="#">
+                      <span>
                         <span className="flaticon-heart"></span>
-                      </a>
+                      </span>
                     </li>
                   </ul>
 
@@ -91,9 +91,9 @@ const FeaturedProperties = () => {
                   <ul className="prop_details mb0">
                     {item.itemDetails.map((val, i) => (
                       <li className="list-inline-item" key={i}>
-                        <a href="#">
+                        <span>
                           {val.name}: {val.number}
-                        </a>
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -101,17 +101,17 @@ const FeaturedProperties = () => {
                 <div className="fp_footer">
                   <ul className="fp_meta float-start mb0">
                     <li className="list-inline-item">
-                      <a href="#">
+                      <span>
                         <Image
                           width={40}
                           height={40}
                           src={item.posterAvatar}
                           alt="pposter1.png"
                         />
-                      </a>
+                      </span>
                     </li>
                     <li className="list-inline-item">
-                      <a href="#">{item.posterName}</a>
+                      <span>{item.posterName}</span>
                     </li>
                   </ul>
                   <div className="fp_pdate float-end">{item.postedYear}</div>

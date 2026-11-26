@@ -18,7 +18,7 @@ const CallToAction = ({ className }) => {
               <p className="fz20 fw-bold">Contactează-ne!</p>
             </div>
 
-            <div class="d-flex w-100 flex-column align-items-center align-items-lg-start">
+            <div className="d-flex w-100 flex-column align-items-center align-items-lg-start">
               <div className="d-flex flex-column flex-sm-row justify-content-center justify-content-sm-start gap-3 w-100">
                 <Button
                   style={{ minWidth: "calc(40% - 10px)" }}

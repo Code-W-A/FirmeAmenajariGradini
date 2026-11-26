@@ -20,7 +20,6 @@ const SearchData = ({ judete }) => {
   // const handleGetData = async () => {
   //   setLoading(true);
   //   let data = await handleGetFirestore(location);
-  //   console.log("Data....", data);
 
   //   // Inițializează updatedData ca un array gol
   //   let updatedData = [];
@@ -31,7 +30,6 @@ const SearchData = ({ judete }) => {
   //     const collectionLength = await getFirestoreCollectionLength(
   //       subcollectionPath
   //     );
-  //     console.log("here...");
 
   //     // Creează un nou obiect cu informațiile existente și adaugă numărul de localități
   //     const updatedItem = { ...item, localitatiCount: collectionLength };
@@ -59,8 +57,6 @@ const SearchData = ({ judete }) => {
 
   // Logica de ștergere a elementului
   const handleConfirmDelete = async () => {
-    console.log("Deleting item with ID:", selectedItemId);
-    console.log("location.....:", location);
     let updatedData = await handleDeleteFirestoreData(
       `${location}/${selectedItemId}`,
       true,
@@ -109,9 +105,9 @@ const SearchData = ({ judete }) => {
                       data-placement="top"
                       title="View"
                     >
-                      <a href="#">
+                      <span>
                         <span className="flaticon-view"></span>
-                      </a>
+                      </span>
                     </li>
                     <Link
                       href={{
@@ -129,9 +125,9 @@ const SearchData = ({ judete }) => {
                         data-placement="top"
                         title="Edit"
                       >
-                        <a href="#">
+                        <span>
                           <span className="flaticon-edit"></span>
-                        </a>
+                        </span>
                       </li>
                     </Link>
                     <li
@@ -144,9 +140,9 @@ const SearchData = ({ judete }) => {
                         handleDeleteClick(item.documentId);
                       }}
                     >
-                      <a href="#">
+                      <span>
                         <span className="flaticon-garbage"></span>
-                      </a>
+                      </span>
                     </li>
                   </ul>
                 </td>

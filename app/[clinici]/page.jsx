@@ -5,18 +5,30 @@ import {
   getCities,
   getLocalLandingPageBySlug,
   getLocalLandingPageSlugs,
+  getRelatedArticlesForLandingPage,
   getServiceCategories,
 } from "@/lib/sanity/queries";
 import { notFound } from "next/navigation";
 import JsonLd, { BreadcrumbsJsonLd } from "@/components/common/JsonLd";
 import { buildFaqPageLd, buildItemListLd } from "@/utils/schemaOrg";
-import { canonicalUrl } from "@/utils/siteUrl";
+import { seoCanonical, landingPageSeo } from "@/utils/seoIndexing";
 import { DEFAULT_OG_IMAGE } from "@/utils/seoDefaults";
+import { pageTitle } from "@/utils/seoTitle";
+import { isReservedSlug } from "@/utils/reservedPaths";
+import {
+  countyLink,
+  createInternalLinks,
+  linksFromArticles,
+  linksFromCompanies,
+  manualLinks,
+  serviceCategoryLink,
+} from "@/utils/internalLinks";
 
 export const revalidate = 60;
 
 export async function generateStaticParams() {
-  return await getLocalLandingPageSlugs();
+  const pages = await getLocalLandingPageSlugs();
+  return pages.filter((page) => page?.clinici && !isReservedSlug(page.clinici));
 }
 
 export async function generateMetadata({ params }) {
@@ -26,10 +38,11 @@ export async function generateMetadata({ params }) {
     page?.seo?.metaDescription ||
     page?.intro ||
     "Firme locale de amenajari gradini si spatii verzi.";
-  const canonical = canonicalUrl(page?.seo?.canonical || `/${params.clinici}`);
+  const seo = landingPageSeo(page);
+  const canonical = seoCanonical(`/${params.clinici}`, seo);
 
   return {
-    title,
+    title: pageTitle(title),
     description,
     openGraph: {
       title,
@@ -49,57 +62,60 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical,
     },
-    robots: page?.seo?.noIndex ? { index: false, follow: false } : undefined,
+    robots: seo.noIndex ? { index: false, follow: true } : undefined,
   };
 }
 
-async function getServerData(params, searchParams) {
-  try {
-    const page = await getLocalLandingPageBySlug(params.clinici);
-    const [judete, categorii, localitati, firme] = await Promise.all([
-      getCounties(),
-      getServiceCategories(),
-      getCities(),
-      getCompaniesForLandingPage(page),
-    ]);
-    return { judete, categorii, localitati, firme, page };
-  } catch (error) {
-    console.error("Failed to fetch locations:", error);
-    return { judete: [], categorii: [], localitati: [], firme: [], page: null };
-  }
-}
-
-const index = async ({ params, searchParams = null }) => {
-  const data = await getServerData(params);
-  if (!data.page) {
+const index = async ({ params }) => {
+  if (isReservedSlug(params.clinici)) {
     notFound();
   }
 
+  const page = await getLocalLandingPageBySlug(params.clinici);
+  if (!page) notFound();
+
+  const [judete, categorii, localitati, firme, relatedArticles] = await Promise.all([
+    getCounties(),
+    getServiceCategories(),
+    getCities(),
+    getCompaniesForLandingPage(page),
+    getRelatedArticlesForLandingPage(page, { limit: 4 }),
+  ]);
   const pagePath = `/${params.clinici}`;
-  const h1Title = data.page.h1 || data.page.title;
+  const h1Title = page.h1 || page.title;
 
   const webPageLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: h1Title,
-    url: canonicalUrl(pagePath),
+    url: seoCanonical(pagePath, page.seo),
     description:
-      data.page?.seo?.metaDescription ||
-      data.page?.intro ||
+      page?.seo?.metaDescription ||
+      page?.intro ||
       "Lista firmelor locale listate pe FirmeAmenajariGradina.ro.",
   };
 
-  const itemListLd = buildItemListLd(data.firme);
-  const faqPageLd = buildFaqPageLd(data.page.faq, pagePath);
+  const itemListLd = buildItemListLd(firme);
+  const faqPageLd = buildFaqPageLd(page.faq, pagePath);
 
   const breadcrumbs = [{ name: "Acasa", path: "/" }];
-  if (data.page?.county?.name) {
+  if (page?.county?.name && page.county.slug) {
     breadcrumbs.push({
-      name: data.page.county.name,
-      path: `/judet/${data.page.county.slug}`,
+      name: page.county.name,
+      path: `/judet/${page.county.slug}`,
     });
   }
   breadcrumbs.push({ name: h1Title, path: pagePath });
+  const internalLinks = createInternalLinks(
+    [
+      manualLinks(page.internalLinks),
+      countyLink(page.county),
+      serviceCategoryLink(page.serviceCategory),
+      linksFromCompanies(firme, 6),
+      linksFromArticles(relatedArticles, 4),
+    ],
+    pagePath
+  );
 
   return (
     <>
@@ -109,13 +125,14 @@ const index = async ({ params, searchParams = null }) => {
       <BreadcrumbsJsonLd items={breadcrumbs} />
       <SliderStyle
         params={params.clinici}
-        judete={data.judete}
-        categorii={data.categorii}
-        localitati={data.localitati}
-        firme={data.firme}
+        judete={judete}
+        categorii={categorii}
+        localitati={localitati}
+        firme={firme}
         renderMode="listing"
         h1Title={h1Title}
-        landingPage={data.page}
+        landingPage={page}
+        internalLinks={internalLinks}
       />
     </>
   );

@@ -1,14 +1,12 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
 import MobileMenuContent from "./MobileMenuContent";
 import Image from "next/image";
 
-if (typeof window !== "undefined") {
-  require("bootstrap/dist/js/bootstrap");
-}
-
 const MobileMenu = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     // <!-- Main Header Nav For Mobile -->
     <header>
@@ -36,13 +34,17 @@ const MobileMenu = () => {
 
               <li
                 className="list-inline-item"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasMenu"
-                aria-controls="offcanvasMenu"
               >
-                <a>
+                <button
+                  type="button"
+                  className="border-0 bg-transparent p-0"
+                  aria-controls="offcanvasMenu"
+                  aria-expanded={isOpen}
+                  aria-label="Deschide meniul"
+                  onClick={() => setIsOpen(true)}
+                >
                   <span></span>
-                </a>
+                </button>
               </li>
             </ul>
             {/* menu_bar_home2 */}
@@ -51,14 +53,24 @@ const MobileMenu = () => {
         {/* <!-- /.mobile-menu --> */}
 
         <div
-          className="offcanvas offcanvas-end"
+          className={`offcanvas offcanvas-end${isOpen ? " show" : ""}`}
           tabIndex="-1"
           id="offcanvasMenu"
           aria-labelledby="offcanvasMenuLabel"
-          data-bs-scroll="true"
+          aria-modal={isOpen}
+          role="dialog"
+          style={{ visibility: isOpen ? "visible" : "hidden" }}
         >
-          <MobileMenuContent />
+          <MobileMenuContent onNavigate={() => setIsOpen(false)} />
         </div>
+        {isOpen && (
+          <button
+            type="button"
+            className="offcanvas-backdrop fade show border-0"
+            aria-label="Inchide meniul"
+            onClick={() => setIsOpen(false)}
+          />
+        )}
       </div>
     </header>
   );

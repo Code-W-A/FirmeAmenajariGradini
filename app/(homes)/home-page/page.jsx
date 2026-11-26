@@ -1,6 +1,7 @@
 import HomeMain from "@/components/home-4";
 import {
   getArticles,
+  getCounties,
   getPublishedCompanies,
   getServiceCategories,
 } from "@/lib/sanity/queries";
@@ -11,15 +12,16 @@ import {
 // };
 
 const index = async () => {
-  const [articole, categorii, firme] = await Promise.all([
+  const [articole, categorii, firme, counties] = await Promise.all([
     getArticles({ limit: 6 }),
     getServiceCategories(),
     getPublishedCompanies({ limit: 12 }),
+    getCounties(),
   ]);
 
   return (
     <>
-      <HomeMain categorii={categorii} articole={articole} firme={firme} />
+      <HomeMain categorii={categorii} articole={articole} firme={firme} counties={counties} />
     </>
   );
 };

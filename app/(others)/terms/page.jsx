@@ -1,5 +1,5 @@
-import Terms from "@/components/terms-conditions";
 import { BreadcrumbsJsonLd } from "@/components/common/JsonLd";
+import LegalPageFallback from "@/components/sanity/LegalPageFallback";
 import StaticPageContent from "@/components/sanity/StaticPageContent";
 import { getStaticPageBySlug } from "@/lib/sanity/queries";
 import { getStaticPageMetadata } from "@/lib/sanity/staticPage";
@@ -24,7 +24,7 @@ const index = async () => {
           { name: "Termeni si conditii", path: "/terms" },
         ]}
       />
-      {page ? <StaticPageContent page={page} /> : <Terms />}
+      {page?.hasBodyText ? <StaticPageContent page={page} /> : <LegalPageFallback title="Termeni și condiții" />}
     </>
   );
 };

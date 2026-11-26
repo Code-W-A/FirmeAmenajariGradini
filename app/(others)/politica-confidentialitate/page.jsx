@@ -1,5 +1,5 @@
-import AboutUs from "@/components/about-us";
 import { BreadcrumbsJsonLd } from "@/components/common/JsonLd";
+import LegalPageFallback from "@/components/sanity/LegalPageFallback";
 import StaticPageContent from "@/components/sanity/StaticPageContent";
 import { getStaticPageBySlug } from "@/lib/sanity/queries";
 import { getStaticPageMetadata } from "@/lib/sanity/staticPage";
@@ -27,7 +27,7 @@ const index = async () => {
           },
         ]}
       />
-      {page ? <StaticPageContent page={page} /> : <AboutUs />}
+      {page?.hasBodyText ? <StaticPageContent page={page} /> : <LegalPageFallback title="Politica de confidențialitate" />}
     </>
   );
 };

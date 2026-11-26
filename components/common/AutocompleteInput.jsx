@@ -28,7 +28,6 @@ const AutocompleteInput = ({ onPlaceChanged, adresa }) => {
         );
         setInputValue(place.formatted_address); // Actualizează adresa în input după selecție
       } else {
-        console.log("No location selected from suggestions.");
       }
     }
   };

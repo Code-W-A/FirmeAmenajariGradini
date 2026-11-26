@@ -1,13 +1,19 @@
 import Link from "next/link";
+import { findLandingPath } from "@/utils/searchDestination";
 
-const Categorie = ({ judet, localitati }) => {
+const Categorie = ({ localitati, countySlug, landingRoutes = [] }) => {
   return (
     <>
       {localitati
         ? localitati.map((localitate, index) => (
             <li key={index}>
               <Link
-                href={`/amenajari-gradini-${localitate.siteName.toLowerCase()}`}
+                href={
+                  findLandingPath(landingRoutes, {
+                    citySlug: localitate.slug,
+                  }) ||
+                  (countySlug ? `/judet/${countySlug}` : "/amenajari-gradini")
+                }
               >
                 <i className="fa fa-caret-right mr10"></i>
                 {localitate.siteName}

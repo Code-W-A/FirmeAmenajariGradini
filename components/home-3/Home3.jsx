@@ -34,9 +34,9 @@ const Home3 = () => {
               <h2>Featured Properties</h2>
               <p>
                 Handpicked properties by our team.{" "}
-                <a className="float-end" href="#">
+                <span className="float-end">
                   View All <span className="flaticon-next"></span>
-                </a>
+                </span>
               </p>
             </div>
           </div>
@@ -56,9 +56,9 @@ const Home3 = () => {
               <h2>Find Properties in These Cities</h2>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.{" "}
-                <a className="float-end" href="#">
+                <span className="float-end">
                   View All <span className="flaticon-next"></span>
-                </a>
+                </span>
               </p>
             </div>
           </div>
@@ -92,9 +92,9 @@ const Home3 = () => {
               <h2>Best Property Value</h2>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.{" "}
-                <a className="float-end" href="#">
+                <span className="float-end">
                   View All <span className="flaticon-next"></span>
-                </a>
+                </span>
               </p>
             </div>
           </div>
@@ -112,9 +112,9 @@ const Home3 = () => {
               <h2>Our Agents</h2>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.{" "}
-                <a className="float-end" href="#">
+                <span className="float-end">
                   View All <span className="flaticon-next"></span>
-                </a>
+                </span>
               </p>
             </div>
           </div>

@@ -1,7 +1,13 @@
 import GlobalFilter from "./GlobalFilter";
 import ListSearchInputs from "./ListSearchInputs";
 
-const ListSearch = ({ className = "", judete, categorii, localitati = [] }) => {
+const ListSearch = ({
+  className = "",
+  judete,
+  categorii,
+  localitati = [],
+  landingRoutes = [],
+}) => {
   return (
     <div className={`home_adv_srch_opt ${className}`}>
       {/* End nav-pills */}
@@ -17,6 +23,7 @@ const ListSearch = ({ className = "", judete, categorii, localitati = [] }) => {
             judete={judete}
             categorii={categorii}
             localitati={localitati}
+            landingRoutes={landingRoutes}
           />
         </div>
         <div

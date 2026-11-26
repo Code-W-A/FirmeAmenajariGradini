@@ -2,40 +2,40 @@ const Pagination = () => {
   return (
     <ul className="page_navigation">
       <li className="page-item disabled">
-        <a className="page-link" href="#" tabIndex="-1" aria-disabled="true">
+        <span className="page-link" tabIndex="-1" aria-disabled="true">
           {" "}
           <span className="flaticon-left-arrow"></span>
-        </a>
+        </span>
       </li>
       <li className="page-item">
-        <a className="page-link" href="#">
+        <span className="page-link">
           1
-        </a>
+        </span>
       </li>
       <li className="page-item active" aria-current="page">
-        <a className="page-link" href="#">
+        <span className="page-link">
           2 <span className="sr-only">(current)</span>
-        </a>
+        </span>
       </li>
       <li className="page-item">
-        <a className="page-link" href="#">
+        <span className="page-link">
           3
-        </a>
+        </span>
       </li>
       <li className="page-item">
-        <a className="page-link" href="#">
+        <span className="page-link">
           ...
-        </a>
+        </span>
       </li>
       <li className="page-item">
-        <a className="page-link" href="#">
+        <span className="page-link">
           29
-        </a>
+        </span>
       </li>
       <li className="page-item">
-        <a className="page-link" href="#">
+        <span className="page-link">
           <span className="flaticon-right-arrow"></span>
-        </a>
+        </span>
       </li>
     </ul>
   );

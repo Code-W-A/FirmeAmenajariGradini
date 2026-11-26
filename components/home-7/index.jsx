@@ -198,9 +198,9 @@ const index = () => {
 
             <div className="col-lg-4">
               <div className="parner_reg_btn home7 text-right tac-smd">
-                <a className="btn" href="#">
+                <span className="btn">
                   Register Now
-                </a>
+                </span>
               </div>
             </div>
           </div>

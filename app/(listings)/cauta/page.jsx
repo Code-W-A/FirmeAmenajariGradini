@@ -3,6 +3,7 @@ import JsonLd, { BreadcrumbsJsonLd } from "@/components/common/JsonLd";
 import { buildItemListLd } from "@/utils/schemaOrg";
 import { canonicalUrl } from "@/utils/siteUrl";
 import { DEFAULT_OG_IMAGE } from "@/utils/seoDefaults";
+import { pageTitle } from "@/utils/seoTitle";
 import {
   getCounties,
   getCities,
@@ -11,9 +12,10 @@ import {
 } from "@/lib/sanity/queries";
 
 export const metadata = {
-  title: "Cauta firme de amenajari spatii verzi",
+  title: pageTitle("Cauta firme de amenajari spatii verzi"),
   description:
     "Cauta un furnizor de servicii de amenajari spatii verzi in apropiere si solicita o oferta personalizata.",
+  robots: { index: false, follow: true },
   openGraph: {
     title: "Cauta firme de amenajari spatii verzi",
     description:

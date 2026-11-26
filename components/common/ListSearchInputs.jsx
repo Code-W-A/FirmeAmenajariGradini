@@ -9,20 +9,19 @@ import CheckBoxFilter from "./CheckBoxFilter";
 import GlobalSelectBox from "./GlobalSelectBox";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { replaceSpacesWithDashes } from "@/utils/strintText";
+import { buildSearchPath } from "@/utils/searchDestination";
 
 const ListSearchInputs = ({
   className = "",
   judete = [],
   categorii = [],
   localitati: allLocalitati = [],
+  landingRoutes = [],
 }) => {
   const router = useRouter();
   const [selectedJudet, setSelectedJudet] = useState("");
   const [selectedLocalitate, setSelectedLocalitate] = useState("");
-  const [selectedCategorie, setSelectedCategorie] = useState(
-    categorii.length === 1 ? categorii[0].siteName : ""
-  );
+  const [selectedCategorie, setSelectedCategorie] = useState("");
   const [localitati, setLocalitati] = useState([]);
   const [isJudetSelected, setIsJudetSelected] = useState(true);
   const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
@@ -32,8 +31,9 @@ const ListSearchInputs = ({
   // Handler pentru schimbarea selectiei de judete
   const handleJudetChange = async (e) => {
     const judetSelectedName = e.target.value; // Numele județului selectat, un string
-    console.log("judetSelectedName...", judetSelectedName);
     setSelectedJudet(judetSelectedName);
+    setSelectedLocalitate("");
+    setIsLocalitateSelected(true);
     setIsJudetSelected(!!judetSelectedName);
 
     // Găsește obiectul județului selectat bazat pe `siteName`
@@ -55,88 +55,26 @@ const ListSearchInputs = ({
   };
 
   const handleLocalitateChange = (e) => {
-    console.log("Localitate selected: ", e.target.value); // Acesta ar trebui să arate numele localității ca string
+// Acesta ar trebui să arate numele localității ca string
     setSelectedLocalitate(e.target.value);
     setIsLocalitateSelected(!!e.target.value);
   };
 
   // submit handler
   const submitHandler = () => {
-    console.log("submit...", selectedJudet);
-    console.log("submit...", selectedLocalitate);
+    const county = judete.find((item) => item.siteName === selectedJudet);
+    const city = localitati.find((item) => item.siteName === selectedLocalitate);
+    const category = categorii.find((item) => item.siteName === selectedCategorie);
 
-    if (!selectedCategorie && !selectedLocalitate && !selectedJudet) {
-      if (searchKey) {
-        router.push(`/amenajari-gradini?slug=${searchKey}`);
-      } else {
-        router.push(`/amenajari-gradini`);
-      }
-      return;
-    }
-
-    if (selectedLocalitate && selectedCategorie) {
-      console.log("asdadadsada");
-
-      if (searchKey) {
-        router.push(
-          `/${replaceSpacesWithDashes(
-            selectedCategorie.toLocaleLowerCase()
-          )}-${replaceSpacesWithDashes(
-            selectedLocalitate.toLocaleLowerCase()
-          )}?slug=${searchKey}`
-        );
-      } else {
-        router.push(
-          `/${replaceSpacesWithDashes(
-            selectedCategorie.toLocaleLowerCase()
-          )}-${replaceSpacesWithDashes(selectedLocalitate.toLocaleLowerCase())}`
-        );
-      }
-      return;
-    }
-
-    if (selectedLocalitate) {
-      if (searchKey) {
-        router.push(
-          `/amenajari-gradini-${replaceSpacesWithDashes(
-            selectedLocalitate.toLocaleLowerCase()
-          )}?slug=${searchKey}`
-        );
-      } else {
-        router.push(
-          `/amenajari-gradini-${replaceSpacesWithDashes(
-            selectedLocalitate.toLocaleLowerCase()
-          )}`
-        );
-      }
-      return;
-    }
-
-    if (selectedJudet) {
-      if (searchKey) {
-        router.push(
-          `/judet/${replaceSpacesWithDashes(selectedJudet)}?slug=${searchKey}`
-        );
-      } else {
-        router.push(`/judet/${replaceSpacesWithDashes(selectedJudet)}`);
-      }
-      return;
-    }
-
-    if (selectedCategorie) {
-      if (searchKey) {
-        router.push(
-          `/${replaceSpacesWithDashes(
-            selectedCategorie.toLocaleLowerCase()
-          )}?slug=${searchKey}`
-        );
-      } else {
-        router.push(
-          `/${replaceSpacesWithDashes(selectedCategorie.toLocaleLowerCase())}`
-        );
-      }
-      return;
-    }
+    router.push(
+      buildSearchPath({
+        countySlug: county?.slug,
+        citySlug: city?.slug,
+        categorySlug: category?.slug,
+        searchKey,
+        landings: landingRoutes,
+      })
+    );
   };
   return (
     <div className={`home1-advnc-search ${className}`}>
@@ -197,8 +135,13 @@ const ListSearchInputs = ({
                 }`}
                 onChange={handleLocalitateChange}
                 value={selectedLocalitate}
+                disabled={!selectedJudet}
               >
-                <option value="">Localitati</option>
+                <option value="">
+                  {selectedJudet
+                    ? "Localitati"
+                    : "Selecteaza mai intai judetul"}
+                </option>
                 {localitati.map((location, index) => (
                   <option key={index} value={location.siteName}>
                     {location.siteName}

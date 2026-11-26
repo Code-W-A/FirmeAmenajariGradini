@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import AgencyDetails from "@/components/agency-details";
 import PromotionSection from "./PromotionSection";
-import { slugifyFirma } from "@/utils/slugify";
+import { buildCompanyPath } from "@/utils/companyPath";
 
 const FALLBACK_IMAGE = "/assets/categorii/amenajari-gradini-si-spatii-verzi.svg";
 
@@ -23,7 +23,7 @@ const FeaturedItem = ({ firme = [], params, searchParams, renderMode }) => {
     content = firme.map((item, idx) => (
       <div className={`${"col-md-3 col-lg-3"} `} key={item._id || item.id || item.documentId || item.slug}>
         <Link
-          href={`/firma/${item?.slug || slugifyFirma(item)}`}
+          href={buildCompanyPath(item) || "/amenajari-gradini"}
         >
           <div className={`feat_property home7 style4 ${undefined}`}>
             <div className="thumb">

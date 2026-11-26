@@ -39,7 +39,6 @@ export const retrieveTypeOfUser = async (uid) => {
       userType = "isPatient";
     }
   } catch (err) {
-    console.log("Error retrieveTypeOfUser...", err);
   }
 
   return userType;

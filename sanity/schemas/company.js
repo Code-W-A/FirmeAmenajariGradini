@@ -1,4 +1,6 @@
 import { defineField, defineType } from "sanity";
+import { GooglePlacesGeopointInput } from "../components/GooglePlacesGeopointInput";
+import { GooglePlacesAddressInput } from "../components/GooglePlacesAddressInput";
 
 export const company = defineType({
   name: "company",
@@ -49,12 +51,31 @@ export const company = defineType({
       title: "Localitate",
       type: "reference",
       to: [{ type: "city" }],
+      options: {
+        filter: ({ document }) => {
+          const countyRef = document?.county?._ref;
+
+          if (!countyRef) {
+            return {
+              filter: "_type == 'city'",
+            };
+          }
+
+          return {
+            filter: "_type == 'city' && county._ref == $countyRef",
+            params: { countyRef },
+          };
+        },
+      },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "address",
       title: "Adresa",
       type: "string",
+      components: {
+        input: GooglePlacesAddressInput,
+      },
     }),
     defineField({
       name: "postalCode",
@@ -65,6 +86,10 @@ export const company = defineType({
       name: "coordinates",
       title: "Coordonate",
       type: "geopoint",
+      components: {
+        input: GooglePlacesGeopointInput,
+      },
+      hidden: true,
     }),
     defineField({
       name: "phonePrimary",

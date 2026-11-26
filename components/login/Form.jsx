@@ -58,9 +58,9 @@ const Form = () => {
           Remember me
         </label>
 
-        <a className="btn-fpswd float-end" href="#">
+        <span className="btn-fpswd float-end">
           Forgot password?
-        </a>
+        </span>
       </div>
       {/* End .form-group */}
 

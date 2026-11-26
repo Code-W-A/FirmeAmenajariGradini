@@ -35,7 +35,7 @@ const index = async () => {
       />
 
       {page && <StaticPageContent page={page} />}
-      <Contact />
+      <Contact hasEditorialHeading={Boolean(page)} />
     </>
   );
 };

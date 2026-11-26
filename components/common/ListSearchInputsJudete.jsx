@@ -2,9 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { replaceSpacesWithDashes } from "@/utils/strintText";
+import { buildSearchPath } from "@/utils/searchDestination";
 
-const ListSearchInputs = ({ className = "", localitati, judet }) => {
+const ListSearchInputs = ({
+  className = "",
+  localitati = [],
+  countySlug,
+  landingRoutes = [],
+}) => {
   const [locations, setLocations] = useState([...localitati]); // State pentru opțiunile din dropdown
   const [selectedLocation, setSelectedLocation] = useState("");
   const [firmName, setFirmName] = useState("");
@@ -21,60 +26,15 @@ const ListSearchInputs = ({ className = "", localitati, judet }) => {
   const router = useRouter();
 
   const submitHandler = () => {
-    console.log("submit...", judet);
-    console.log("submit...", selectedLocalitate);
-
-    if (!selectedCategorie && !selectedLocalitate && !selectedJudet) {
-      if (firmName) {
-        router.push(`/amenajari-gradini-?slug=${firmName}`);
-      } else {
-        router.push(`/amenajari-gradini-`);
-      }
-      return;
-    }
-
-    if (selectedLocalitate) {
-      if (firmName) {
-        router.push(
-          `/amenajari-gradini-${replaceSpacesWithDashes(
-            selectedLocalitate.toLocaleLowerCase()
-          )}?slug=${firmName}`
-        );
-      } else {
-        router.push(
-          `/amenajari-gradini-${replaceSpacesWithDashes(
-            selectedLocalitate.toLocaleLowerCase()
-          )}`
-        );
-      }
-      return;
-    }
-
-    if (selectedJudet) {
-      if (firmName) {
-        router.push(
-          `/judet/${replaceSpacesWithDashes(selectedJudet)}?slug=${firmName}`
-        );
-      } else {
-        router.push(`/judet/${replaceSpacesWithDashes(selectedJudet)}`);
-      }
-      return;
-    }
-
-    if (selectedLocalitate && selectedCategorie) {
-      router.push(
-        `/${selectedCategorie.toLocaleLowerCase()}/${selectedLocalitate.toLocaleLowerCase()}`
-      );
-      // router.push(
-      //   `/${selectedCategorie.toLocaleLowerCase()}/${selectedCategorie.toLocaleLowerCase()}-${selectedLocalitate.toLocaleLowerCase()}`
-      // );
-      return;
-    }
-
-    if (selectedCategorie) {
-      router.push(`/${selectedCategorie.toLocaleLowerCase()}`);
-      return;
-    }
+    const city = localitati.find((item) => item.siteName === selectedLocalitate);
+    router.push(
+      buildSearchPath({
+        countySlug,
+        citySlug: city?.slug,
+        searchKey: firmName,
+        landings: landingRoutes,
+      })
+    );
   };
 
   return (
@@ -90,7 +50,6 @@ const ListSearchInputs = ({ className = "", localitati, judet }) => {
                 }`}
                 value={selectedLocalitate}
                 onChange={(e) => {
-                  console.log("test...", e.target.value);
                   setSelectedLocalitate(e.target.value);
                   // if (e.target.value) {
                   //   setIsSubmittedWithoutLocation(false); // Resetăm starea de atenționare la schimbarea selecției

@@ -13,7 +13,6 @@ import {
 
 const handleGetData = async () => {
   let data = await handleGetFirestore("Judete");
-  console.log("Data....", data);
 
   // Inițializează updatedData ca un array gol
   let updatedData = [];

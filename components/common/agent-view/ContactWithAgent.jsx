@@ -3,7 +3,6 @@
 import { handleUploadFirestore } from "@/utils/firestoreUtils";
 import React, { useState } from "react";
 import { AlertModal } from "../AlertModal";
-import { getEmbedUrl } from "@/utils/commonUtils";
 import LazyLoadGoogleMap from "@/components/lazyLoadMap/LazyLoadGoogleMap";
 
 const ContactWithAgent = ({ firma }) => {
@@ -35,8 +34,6 @@ const ContactWithAgent = ({ firma }) => {
       emailFirma: firma.emailUnu,
     };
 
-    // Aici poți adăuga logica pentru a trimite datele către un server sau a le prelucra cum dorești
-    console.log("Form data submitted:", formData);
     await handleUploadFirestore(formData, "Mesaje");
 
     // Afișează mesajul de succes
@@ -51,12 +48,6 @@ const ContactWithAgent = ({ firma }) => {
     setEmail("");
     setMessage("");
   };
-
-  const mapSrc = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d${
-    firma?.coordonate?.lng
-  }!3d${
-    firma?.coordonate?.lat
-  }!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0:0x0!2z44Cw55'48.0%22N+25Cw26'51.2%22E!5e0!3m2!1sen!2sro!4v${Date.now()}!5m2!1sen!2sro`;
 
   return (
     <>

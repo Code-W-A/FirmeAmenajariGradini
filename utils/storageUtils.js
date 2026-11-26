@@ -23,7 +23,6 @@ export const uploadImage = async (
   const fileName = new Date().getTime();
   try {
     if (newImage && deletedLogo) {
-      console.log("is new image...started delete");
       // Create a reference to the file to delete
       const deletedRef = ref(storage, `images/${firstLocation}/${deletedLogo}`);
 
@@ -31,24 +30,17 @@ export const uploadImage = async (
       deleteObject(deletedRef)
         .then(() => {
           // File deleted successfully
-          console.log("File deleted successfully");
         })
         .catch((error) => {
-          console.log(
-            "Uh-oh, an error occurred! AT uploadImage DELETE...",
-            error
-          );
           // Uh-oh, an error occurred!
         });
     }
 
     if (!imageUpload) {
-      console.log("Please select an image");
       return;
     }
 
     if (imageUpload instanceof File) {
-      console.log("TEst....");
 
       // Options for image compression
       const options = {
@@ -73,12 +65,10 @@ export const uploadImage = async (
       // Get the download URL for the uploaded image
       finalUri = await getDownloadURL(snapshot.ref);
 
-      console.log("Image uploaded successfully. Download URL:", finalUri);
     } else {
       return imageUpload;
     }
   } catch (error) {
-    console.log("Error uploading image to storage:", error.message);
   }
   return { finalUri, fileName };
 };
@@ -88,7 +78,6 @@ export const deleteImage = async (
   oldFileName
 ) => {
   try {
-    console.log("started delete...");
     // Create a reference to the file to delete
     const deletedRef = ref(storage, `images/${firstLocation}/${oldFileName}`);
 
@@ -96,16 +85,12 @@ export const deleteImage = async (
     deleteObject(deletedRef)
       .then(() => {
         // File deleted successfully
-        console.log("File deleted successfully");
       })
       .catch((error) => {
-        console.log("Uh-oh, an error occurred! AT image... DELETE...", error);
         // Uh-oh, an error occurred!
       });
 
-    console.log("Image delete successfully...");
   } catch (error) {
-    console.log("Error delete image from storage:");
   }
 };
 
@@ -130,12 +115,10 @@ export const uploadMultipleImages = async (
 
   try {
     if (!images.length) {
-      console.log("Please select an image");
       return;
     }
 
     if (newImage && deletedImages.length > 0) {
-      console.log("is new image...started delete");
       // Presupunem că `images.fileNames` este un array cu numele fișierelor pe care vrei să le ștergi
       // și că `firstLocation` este un string care reprezintă locația inițială a acestor fișiere în Firebase Storage
 
@@ -145,7 +128,7 @@ export const uploadMultipleImages = async (
 
         try {
           await deleteObject(deletedRef); // Încercăm să ștergem fișierul
-          console.log(`${fileName} deleted successfully`); // Logăm succesul dacă fișierul a fost șters
+// Logăm succesul dacă fișierul a fost șters
         } catch (error) {
           console.error(`Error deleting ${fileName}:`, error); // Logăm eroarea în caz de eșec
         }
@@ -154,7 +137,6 @@ export const uploadMultipleImages = async (
 
     for (const imageUpload of images) {
       if (imageUpload instanceof File) {
-        console.log("file...");
         const fileName =
           new Date().getTime() + "_" + images.indexOf(imageUpload); // Asigură unicitate
         const imageRef = ref(storage, `images/${firstLocation}/${fileName}`);
@@ -173,7 +155,6 @@ export const uploadMultipleImages = async (
 
         const snapshot = await uploadBytes(imageRef, compressedFile, metadata);
         const finalUri = await getDownloadURL(snapshot.ref);
-        console.log("Image uploaded successfully. Download URL:", finalUri);
 
         const alt = getAltFor(imageUpload.name) || "";
         imgs.push({ finalUri, fileName, alt });
@@ -193,9 +174,7 @@ export const uploadMultipleImages = async (
       }
     }
   } catch (error) {
-    console.log("Error uploading image to storage:", error.message);
   }
-  console.log("imgs...", imgs);
   return { imgs }; // Returnează array-uri cu URI-urile și numele fișierelor
 };
 
@@ -204,15 +183,11 @@ export const deleteMultipleImages = async (
   oldFileNames // Acesta va fi acum un array de nume de fișiere
 ) => {
   try {
-    console.log("Started delete...");
     for (const fileName of oldFileNames) {
       const deletedRef = ref(storage, `images/${firstLocation}/${fileName}`);
       await deleteObject(deletedRef);
-      console.log("File deleted successfully:", fileName);
     }
-    console.log("All images delete successfully...");
   } catch (error) {
-    console.log("Error delete image from storage:", error);
   }
 };
 

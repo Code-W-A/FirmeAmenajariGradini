@@ -1,47 +1,27 @@
 module.exports = [
   {
     id: 1,
-    img: "/assets/images/service/1.jpg",
-    title: "Redfin Ranks the Most Competitive Neighborhoods of 2020",
+    img: "/assets/categorii/proiectare-gradini-si-spatii-verzi.svg",
+    title: "Proiectarea grădinilor și a spațiilor verzi",
   },
   {
     id: 2,
-    img: "/assets/images/service/2.jpg",
-    title: "Why We Should All Support Clear Cooperation",
+    img: "/assets/categorii/amenajari-gradini-si-spatii-verzi.svg",
+    title: "Amenajarea grădinilor și a spațiilor verzi",
   },
   {
     id: 3,
-    img: "/assets/images/service/3.jpg",
-    title: "Redfin Ranks the Most Competitive Neighborhoods of 2020",
+    img: "/assets/categorii/intretinere-gradini-si-spatii-verzi.svg",
+    title: "Întreținerea grădinilor și a spațiilor verzi",
   },
   {
     id: 4,
-    img: "/assets/images/service/4.jpg",
-    title: "12 Walkable Cities Where You Can Live Affordably",
+    img: "/assets/categorii/furnizare-si-montaj-sisteme-de-irigatii.svg",
+    title: "Furnizare și montaj de sisteme de irigații",
   },
   {
     id: 5,
-    img: "/assets/images/service/5.jpg",
-    title: "Redfin Unveils the Best Canadian Cities for Biking",
-  },
-  {
-    id: 6,
-    img: "/assets/images/service/6.jpg",
-    title: "You Can Buy The Piano Teacher’s Home from Groundhog Day",
-  },
-  {
-    id: 7,
-    img: "/assets/images/service/7.jpg",
-    title: "Housing Markets That Changed the Most This Decade",
-  },
-  {
-    id: 8,
-    img: "/assets/images/service/8.jpg",
-    title: "Redfin Ranks the Most Competitive Neighborhoods of 2020",
-  },
-  {
-    id: 9,
-    img: "/assets/images/service/9.jpg",
-    title: "12 Walkable Cities Where You Can Live Affordably",
+    img: "/assets/categorii/comercializare-plante-ornamentale.svg",
+    title: "Comercializarea plantelor ornamentale",
   },
 ];

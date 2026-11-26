@@ -1,3 +1,4 @@
+import CountyDirectory from "@/components/listings/CountyDirectory";
 import Blogs from "../common/Blogs";
 import GlobalHeroFilter from "../common/GlobalHeroFilter";
 import MobileMenu from "../common/header/MobileMenu";
@@ -18,7 +19,7 @@ import SectiuneIncredere from "../common/SectiuneIncredere";
 // import CookieBanner from "../Cookies/CookieBanner";
 import FeaturedItem from "../listing-style/slider-style/FeaturedItem";
 
-const index = async ({ firme, articole, categorii }) => {
+const index = async ({ firme, articole, categorii, counties = [] }) => {
   // noStore();
 
   return (
@@ -48,7 +49,7 @@ const index = async ({ firme, articole, categorii }) => {
             <div className="row posr mb25">
               <div className="col-lg-12">
                 <div className="home_content home4">
-                  <div class="home-text w-100 w-md-75">
+                  <div className="home-text w-100 w-md-75">
                     <h1 className="fz50 txt-color-primary text-center mb10 heading-pagina-principala">
                       Alege un specialist in amenajari gradini si spatii verzi!
                     </h1>
@@ -378,6 +379,8 @@ const index = async ({ firme, articole, categorii }) => {
         </div>
       </section> */}
       {/* <!-- Our Footer --> */}
+      <CountyDirectory counties={counties} />
+
       <section className="footer_one">
         <div className="container">
           <div className="row">

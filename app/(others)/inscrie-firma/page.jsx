@@ -34,7 +34,7 @@ const index = async () => {
         ]}
       />
       {page && <StaticPageContent page={page} />}
-      <InscrieClinica />
+      <InscrieClinica hasEditorialHeading={Boolean(page)} />
     </>
   );
 };

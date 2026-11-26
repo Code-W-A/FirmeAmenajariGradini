@@ -13,11 +13,11 @@ const SingleService = () => {
                 height={232}
                 className="img-fluid w100 h-100 cover"
                 src={item.img}
-                alt={item.img}
+                alt=""
               />
             </div>
             <div className="details">
-              <h4>{item.title}</h4>
+              <h2 className="fz20">{item.title}</h2>
             </div>
           </div>
         </div>

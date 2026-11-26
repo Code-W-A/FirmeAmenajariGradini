@@ -20,7 +20,6 @@ import { handleDeleteAccount } from "./authUtils";
 const auth = authentication;
 
 export const deleteUserData = async () => {
-  console.log("deleting...user data from firebase...");
   try {
     // DELETE DOC FROM DOCTOR COLLECTION AND SUBCOLLECTIO
     await deleteDoc(
@@ -29,6 +28,5 @@ export const deleteUserData = async () => {
       handleDeleteAccount();
     });
   } catch (err) {
-    console.log("error deleting doctor", err);
   }
 };

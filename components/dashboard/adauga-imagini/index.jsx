@@ -78,8 +78,6 @@ const index = () => {
 
   // delete image
   const deleteImage = (item) => {
-    console.log("itemmm....", item);
-    console.log(item);
     // Filtrăm imaginile rămase
     const deleted = propertySelectedImgs?.filter((file) =>
       file instanceof File ? file.name !== item.name : file !== item
@@ -110,9 +108,7 @@ const index = () => {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    console.log("Submitting form with values:", imaginiData);
     if (propertySelectedImgs.length === 0 && !imaginiData.idGalerieFoto) {
-      console.log("No image length...");
       setSuccessMessage("Nu sunt adaugate imagini");
       setIsLoading(false);
       return;
@@ -129,7 +125,6 @@ const index = () => {
             deletedImages
           );
         }
-        console.log("imaginiData....", imaginiData);
 
         const imageData = {
           idGalerieFoto: imaginiData.idGalerieFoto,
@@ -206,11 +201,9 @@ const index = () => {
 
   const handleQuery = async () => {
     const numericId = parseInt(id, 10); // Convertește `id` din string în număr întreg.
-    console.log("id....", typeof numericId);
 
     try {
       const c = await handleQueryFirestore("Imagini", "id", numericId);
-      console.log("course...found..", c);
       setImaginiData(c[0]);
       // Presupunând că `c` este un obiect care conține datele necesare,
       // actualizează state-ul `imaginiData` cu aceste date.
@@ -221,7 +214,6 @@ const index = () => {
         //   // Aici exemplific cu câteva câmpuri, ajustează conform structurii obiectului `c[0]`.
         //   siteName: c[0].siteName || prevState.siteName,
         // }));
-        console.log("test here...", [c[0].image]);
         setDocumentId(c[0].documentId);
         setPropertySelectedImgs(c[0].imagini.imgs || c[0].imagini.imgs);
       }
@@ -231,7 +223,6 @@ const index = () => {
   };
 
   useEffect(() => {
-    console.log("test...");
     if (id) {
       if (id.length > 0) {
         handleQuery();

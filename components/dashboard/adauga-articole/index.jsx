@@ -97,8 +97,6 @@ const Index = () => {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    console.log("Submitting form with values:", formValues);
-    console.log("propertySelectedImgs:", propertySelectedImgs);
 
     const metaErrors = validateMetaFields({
       metaTitle: formValues.metaTitle,
@@ -111,20 +109,13 @@ const Index = () => {
     }
 
     if (propertySelectedImgs.length === 0) {
-      console.log("No image length...");
       setSuccessMessage("Nu este adaugata imagine");
       setIsLoading(false);
       return;
     }
 
-    console.log("continue.....");
     try {
       if (isEdit) {
-        console.log("oldImageFileName...", typeof oldImageFileName);
-        console.log(
-          "propertySelectedImgs[0].fileName...",
-          propertySelectedImgs
-        );
         let oldFileName = oldImageFileName
           ? oldImageFileName
           : propertySelectedImgs[0].fileName;
@@ -139,7 +130,6 @@ const Index = () => {
           );
 
           formValues.image = newImage;
-          console.log("new image....", formValues);
         }
         await handleUpdateFirestore(`Articole/${documentId}`, formValues).then(
           () => {
@@ -147,7 +137,6 @@ const Index = () => {
           }
         );
       } else {
-        console.log("propertySelectedImgs....", propertySelectedImgs);
         if (isNewImage) {
           const image = await uploadImage(
             propertySelectedImgs,
@@ -156,7 +145,6 @@ const Index = () => {
             "Articole"
           );
           formValues.image = image;
-          console.log("form values....", formValues);
         }
         await handleUploadFirestore(formValues, "Articole").then(() => {
           setIsLoading(false);
@@ -213,11 +201,9 @@ const Index = () => {
 
   const handleQuery = async () => {
     const numericId = parseInt(id, 10); // Convertește `id` din string în număr întreg.
-    console.log("id....", typeof numericId);
 
     try {
       const c = await handleQueryFirestore("Articole", "id", numericId);
-      console.log("course...found..", c);
 
       // Presupunând că `c` este un obiect care conține datele necesare,
       // actualizează state-ul `formValues` cu aceste date.
@@ -234,7 +220,6 @@ const Index = () => {
           articleContentSecond:
             c[0].articleContentSecond || prevState.articleContentSecond,
         }));
-        console.log("test here...", [c[0].image]);
         setDocumentId(c[0].documentId);
         setPropertySelectedImgs([c[0].image || c[0].image]);
       }
@@ -244,7 +229,6 @@ const Index = () => {
   };
 
   useEffect(() => {
-    console.log("test...");
     if (id) {
       if (id.length > 0) {
         handleQuery();

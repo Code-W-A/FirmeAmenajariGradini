@@ -9,7 +9,6 @@ export const handleSignOut = (route) => {
       route.push("/signin");
     })
     .catch((error) => {
-      console.log("Error at signout...", error);
       // An error happened.
     });
 };

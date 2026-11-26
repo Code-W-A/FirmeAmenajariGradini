@@ -16,9 +16,7 @@ const SearchData = ({ location }) => {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const handleGetData = async () => {
-    console.log("Start....");
     let data = await handleGetSubcollections("Localitati");
-    console.log("Data....here...", data);
     setData([...data]);
   };
 
@@ -27,7 +25,6 @@ const SearchData = ({ location }) => {
   }, []);
 
   const handleDeleteClick = (item) => {
-    console.log("item...", item);
     setSelectedItem(item); // Salvează ID-ul elementului selectat
     setShowModal(true); // Afișează modalul
   };
@@ -39,7 +36,6 @@ const SearchData = ({ location }) => {
 
   // Logica de ștergere a elementului
   const handleConfirmDelete = async () => {
-    console.log("Deleting item with ID:", selectedItem);
     let updatedData = await handleDeleteFirestoreSubcollectionData(
       `Judete/${selectedItem.collectionId}/Localitati/${selectedItem.documentId}`,
       true,
@@ -47,7 +43,6 @@ const SearchData = ({ location }) => {
       selectedItem
     );
     // // Aici adaugi logica pentru a șterge elementul din sursa ta de date
-    console.log("updatedData.....:", updatedData);
     setData(updatedData);
     setShowModal(false); // Închide modalul după ștergere
   };
@@ -96,9 +91,9 @@ const SearchData = ({ location }) => {
                       data-placement="top"
                       title="View"
                     >
-                      <a href="#">
+                      <span>
                         <span className="flaticon-view"></span>
-                      </a>
+                      </span>
                     </li>
                     <Link
                       href={{
@@ -118,9 +113,9 @@ const SearchData = ({ location }) => {
                         data-placement="top"
                         title="Edit"
                       >
-                        <a href="#">
+                        <span>
                           <span className="flaticon-edit"></span>
-                        </a>
+                        </span>
                       </li>
                     </Link>
                     <li
@@ -133,9 +128,9 @@ const SearchData = ({ location }) => {
                         handleDeleteClick(item);
                       }}
                     >
-                      <a href="#">
+                      <span>
                         <span className="flaticon-garbage"></span>
-                      </a>
+                      </span>
                     </li>
                   </ul>
                 </td>

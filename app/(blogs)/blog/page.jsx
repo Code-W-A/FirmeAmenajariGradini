@@ -3,9 +3,10 @@ import { BreadcrumbsJsonLd } from "@/components/common/JsonLd";
 import { getArticles } from "@/lib/sanity/queries";
 import { canonicalUrl } from "@/utils/siteUrl";
 import { DEFAULT_OG_IMAGE } from "@/utils/seoDefaults";
+import { pageTitle } from "@/utils/seoTitle";
 
 export const metadata = {
-  title: "Blog amenajari gradini si spatii verzi",
+  title: pageTitle("Blog amenajari gradini si spatii verzi"),
   description:
     "Articole, ghiduri si sfaturi pentru amenajarea si intretinerea gradinilor si spatiilor verzi.",
   openGraph: {

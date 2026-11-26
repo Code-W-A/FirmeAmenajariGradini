@@ -1,5 +1,4 @@
 import ListSearch from "@/components/common/ListSearch";
-import Pagination from "../../common/blog/Pagination";
 import CopyrightFooter from "../../common/footer/CopyrightFooter";
 import Footer from "../../common/footer/Footer";
 import GlobalHeroFilter from "../../common/GlobalHeroFilter";
@@ -10,7 +9,6 @@ import FilterTopBar from "../../common/listing/FilterTopBar";
 import GridListButton from "../../common/listing/GridListButton";
 import ShowFilter from "../../common/listing/ShowFilter";
 import SidebarListing3 from "../../common/listing/SidebarListing3";
-import PopupSignInUp from "../../common/PopupSignInUp";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import FeaturedItem from "./FeaturedItem";
 import HeroSlider from "./HeroSlider";
@@ -20,6 +18,7 @@ import Button from "@/components/common/CommonButton";
 import CallToAction from "@/components/common/CallToAction";
 import BreadCrumb from "@/components/common/BreadCrumb";
 import PortableContent from "@/components/sanity/PortableContent";
+import InternalLinksSection from "@/components/common/InternalLinksSection";
 
 import { notFound } from "next/navigation";
 
@@ -32,7 +31,11 @@ const index = async ({
   searchParams,
   h1Title,
   landingPage,
+  internalLinks = [],
   renderMode, // "home" | "listing" | "detail" (defaults by params presence)
+  landingRoutes = [],
+  pagination = null,
+  relatedNavigation = null,
 }) => {
   const pageH1 =
     h1Title ||
@@ -50,9 +53,6 @@ const index = async ({
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
-
-      {/* <!-- Modal --> */}
-      <PopupSignInUp />
 
       {hideHero && mode !== "detail" && <BreadCrumbBanner title={pageH1} />}
 
@@ -85,6 +85,7 @@ const index = async ({
                     judete={judete}
                     categorii={categorii}
                     localitati={localitati}
+                    landingRoutes={landingRoutes}
                   />
                 </div>
               </div>
@@ -114,23 +115,14 @@ const index = async ({
                     ))}
                   </div>
                 )}
-                {Array.isArray(landingPage.internalLinks) &&
-                  landingPage.internalLinks.length > 0 && (
-                    <div className="mt30">
-                      <h2>Pagini utile</h2>
-                      <ul>
-                        {landingPage.internalLinks.map((link) => (
-                          <li key={link._key || link.path}>
-                            <a href={link.path}>{link.label}</a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
               </div>
             </div>
           </div>
         </section>
+      )}
+
+      {landingPage && (
+        <InternalLinksSection title="Pagini utile" links={internalLinks} />
       )}
 
       {/* <!-- Listing Grid View --> */}
@@ -148,15 +140,13 @@ const index = async ({
               </div>
               {/* End .row */}
 
-              {/* {!params && (
+              {pagination ? (
                 <div className="row">
                   <div className="col-lg-12 mt20">
-                    <div className="mbp_pagination">
-                      <Pagination />
-                    </div>
+                    <div className="mbp_pagination">{pagination}</div>
                   </div>
                 </div>
-              )} */}
+              ) : null}
 
               {/* End .row */}
             </div>
@@ -166,8 +156,13 @@ const index = async ({
         </div>
       </section>
 
+      {!landingPage && internalLinks?.length > 0 && (
+        <InternalLinksSection title="Pagini utile" links={internalLinks} />
+      )}
+
       {/* <!-- Start Call to Action --> */}
 
+      {relatedNavigation}
       <CallToAction />
 
       {/* <!-- Our Footer --> */}

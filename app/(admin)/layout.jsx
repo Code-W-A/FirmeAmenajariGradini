@@ -1,3 +1,6 @@
+import "@/public/assets/scss/dashbord_navitaion.css";
+import "@/public/assets/scss/components/_dashboard.scss";
+
 export const metadata = {
   robots: {
     index: false,

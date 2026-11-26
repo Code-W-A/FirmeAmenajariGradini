@@ -12,7 +12,7 @@ import {
 import { fetchLocation } from "@/app/services/geocoding";
 import { calculateDistance } from "@/utils/commonUtils";
 import { replaceDashesWithSpaces } from "@/utils/strintText";
-import { slugifyFirma } from "@/utils/slugify";
+import { buildCompanyPath } from "@/utils/companyPath";
 
 const FeaturedItem = ({ firme, params }) => {
   const isGridOrList = true;
@@ -20,7 +20,6 @@ const FeaturedItem = ({ firme, params }) => {
   const [parteneri, setParteneri] = useState();
 
   useEffect(() => {
-    console.log("params...", params);
     navigator.geolocation.getCurrentPosition(
       async function (position) {
         const { latitude, longitude } = position.coords;
@@ -58,7 +57,6 @@ const FeaturedItem = ({ firme, params }) => {
 
           if (params) {
             if (params[0].split("-")[0] === "parteneri") {
-              console.log("testing...here....test", params[0].split("-")[0]);
               let localitate = params[0]; // presupunem că params[0] este un string
               const parts = localitate.split("-");
 
@@ -66,11 +64,9 @@ const FeaturedItem = ({ firme, params }) => {
               let decodedPart = replaceDashesWithSpaces(parts[1]);
               // Verifică dacă stringul decodificat conține cuvântul "sector"
               if (decodedPart.includes("sector")) {
-                console.log("Partea conține 'sector'", decodedPart);
 
                 let sectorDorit =
                   decodedPart.charAt(0).toUpperCase() + decodedPart.slice(1);
-                console.log("Test here sector dorit....", sectorDorit);
                 parteneriFiltrati = await handleQueryFirestore(
                   "Users",
                   "sector",
@@ -78,15 +74,12 @@ const FeaturedItem = ({ firme, params }) => {
                   "userType",
                   "Partener"
                 );
-                console.log("Test here localitate....", parteneriFiltrati);
                 setParteneri([...parteneriFiltrati]);
 
                 // Execută codul dorit aici
               } else {
-                console.log("Partea nu conține 'sector'");
                 let localitateDorita =
                   parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
-                console.log("Test here localitate....", localitateDorita);
                 parteneriFiltrati = await handleQueryFirestore(
                   "Users",
                   "localitate",
@@ -94,7 +87,6 @@ const FeaturedItem = ({ firme, params }) => {
                   "userType",
                   "Partener"
                 );
-                console.log("Test here localitate....", parteneriFiltrati);
                 setParteneri([...parteneriFiltrati]);
               }
             } else {
@@ -115,12 +107,9 @@ const FeaturedItem = ({ firme, params }) => {
                 let localitate = params[1]; // presupunem că params[0] este un string
                 const parts = localitate.split("-");
                 let decodedPart = replaceDashesWithSpaces(parts[1]);
-                console.log("it tests....", decodedPart);
                 if (decodedPart.includes("sector")) {
                   let sectorDorit =
                     decodedPart.charAt(0).toUpperCase() + decodedPart.slice(1);
-                  console.log("Test here localitate....", categorieDorita);
-                  console.log("Test here sector....", sectorDorit);
                   parteneriFiltrati = await handleQueryFirestore(
                     "Users",
                     "categorie",
@@ -128,13 +117,10 @@ const FeaturedItem = ({ firme, params }) => {
                     "sector",
                     sectorDorit
                   );
-                  console.log("Test here localitate....", parteneriFiltrati);
                   setParteneri([...parteneriFiltrati]);
                 } else {
                   let localitateDorita =
                     parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
-                  console.log("Test here localitate....", categorieDorita);
-                  console.log("Test here localitate....", localitateDorita);
                   parteneriFiltrati = await handleQueryFirestore(
                     "Users",
                     "categorie",
@@ -142,7 +128,6 @@ const FeaturedItem = ({ firme, params }) => {
                     "localitate",
                     localitateDorita
                   );
-                  console.log("Test here localitate....", parteneriFiltrati);
                   setParteneri([...parteneriFiltrati]);
                 }
               } else {
@@ -152,7 +137,6 @@ const FeaturedItem = ({ firme, params }) => {
           } else {
             setParteneri([...parteneriOrdonati]);
           }
-          console.log("parteneri cu distanta...", parteneriOrdonati);
         } catch (error) {
           console.error("Error fetching location data: ", error);
         }
@@ -282,24 +266,24 @@ const FeaturedItem = ({ firme, params }) => {
           <div className="thmb_cntnt">
             <ul className="tag mb0">
               <li className="list-inline-item">
-                <a href="#">Promovat</a>
+                <span>Promovat</span>
               </li>
               {/* <li className="list-inline-item">
-                  <a href="#" className="text-capitalize">
+                  <span className="text-capitalize">
                     {item?.featured}
-                  </a>
+                  </span>
                 </li> */}
             </ul>
             {/* <ul className="icon mb0">
                 <li className="list-inline-item">
-                  <a href="#">
+                  <span>
                     <span className="flaticon-transfer-1"></span>
-                  </a>
+                  </span>
                 </li>
                 <li className="list-inline-item">
-                  <a href="#">
+                  <span>
                     <span className="flaticon-heart"></span>
-                  </a>
+                  </span>
                 </li>
               </ul> */}
 
@@ -316,7 +300,7 @@ const FeaturedItem = ({ firme, params }) => {
           <div className="tc_content p10">
             {/* <p className="text-thm">{item?.type}</p> */}
             <h4>
-              <Link href={`/firma/${item?.slug || slugifyFirma(item)}`}>
+              <Link href={buildCompanyPath(item) || "/amenajari-gradini"}>
                 {item?.siteName}
               </Link>
             </h4>
@@ -325,9 +309,9 @@ const FeaturedItem = ({ firme, params }) => {
             {/* <ul className="prop_details mb0">
                 {item?.itemDetails.map((val, i) => (
                   <li className="list-inline-item" key={i}>
-                    <a href="#">
+                    <span>
                       {val.name}: {val.number}
-                    </a>
+                    </span>
                   </li>
                 ))}
               </ul> */}

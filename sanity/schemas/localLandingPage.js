@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { isReservedSlug } from "../../utils/reservedPaths";
 
 export const localLandingPage = defineType({
   name: "localLandingPage",
@@ -17,11 +18,19 @@ export const localLandingPage = defineType({
       type: "slug",
       description: "Fara slash. Ex: amenajari-gradini-cluj-napoca",
       options: { source: "title", maxLength: 96 },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.required().custom((slug) => {
+          const current = slug?.current || "";
+          if (isReservedSlug(current)) {
+            return "Slug-ul se suprapune cu o ruta statica a site-ului.";
+          }
+          return true;
+        }),
     }),
     defineField({
       name: "published",
-      title: "Publicata",
+      title: "Publicată",
+      description: "Pagina intră în sitemap când are conținut editorial și cel puțin o firmă publicată care corespunde zonei sau serviciului.",
       type: "boolean",
       initialValue: false,
     }),

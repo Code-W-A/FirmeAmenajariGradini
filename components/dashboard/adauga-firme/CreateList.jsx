@@ -6,6 +6,7 @@ import {
   META_DESCRIPTION_MAX,
   getCounterClass,
 } from "@/utils/seoValidation";
+import { slugify } from "@/utils/slugify";
 
 const CreateList = ({
   handleInputChange,
@@ -51,9 +52,13 @@ const CreateList = ({
             value={formValues.categorie} // Asigură legătura cu state-ul părintelui
             onChange={handleInputChange} // Folosește funcția de manipulare a schimbării
           >
-            <option data-tokens="Selecteaza">Selecteaza</option>
+            <option value="" data-tokens="Selecteaza">
+              Selecteaza
+            </option>
             {categorii.map((cat, index) => (
-              <option data-tokens={cat.siteName}>{cat.siteName}</option>
+              <option key={index} value={cat.siteName} data-tokens={cat.siteName}>
+                {cat.siteName}
+              </option>
             ))}
           </select>
         </div>
@@ -70,9 +75,13 @@ const CreateList = ({
             value={formValues.judet} // Asigură legătura cu state-ul părintelui
             onChange={handleJudetChange} // Folosește funcția de manipulare a schimbării
           >
-            <option data-tokens="Selecteaza">Selecteaza</option>
+            <option value="" data-tokens="Selecteaza">
+              Selecteaza
+            </option>
             {judete.map((jud, index) => (
-              <option data-tokens={jud.siteName}>{jud.siteName}</option>
+              <option key={index} value={jud.siteName} data-tokens={jud.siteName}>
+                {jud.siteName}
+              </option>
             ))}
           </select>
         </div>
@@ -88,10 +97,15 @@ const CreateList = ({
             data-width="100%"
             value={formValues.localitate} // Asigură legătura cu state-ul părintelui
             onChange={handleInputChange} // Folosește funcția de manipulare a schimbării
+            disabled={!formValues.judet}
           >
-            <option data-tokens="Selecteaza">Selecteaza</option>
+            <option value="" data-tokens="Selecteaza">
+              {formValues.judet ? "Selecteaza" : "Alege mai intai judetul"}
+            </option>
             {localitati.map((loc, index) => (
-              <option data-tokens={loc.siteName}>{loc.siteName}</option>
+              <option key={index} value={loc.siteName} data-tokens={loc.siteName}>
+                {loc.siteName}
+              </option>
             ))}
           </select>
         </div>
@@ -137,7 +151,10 @@ const CreateList = ({
             )}
           </div>
           <small className="text-muted">
-            URL public: firmeamenajarigradina.ro/firma/
+            URL public: firmeamenajarigradina.ro/firme-amenajari-gradini/
+            {formValues.localitate
+              ? `${slugify(formValues.localitate)}/`
+              : "(localitate)/"}
             {formValues.slug || "(slug)"}
           </small>
         </div>

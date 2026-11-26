@@ -24,7 +24,7 @@ const TableData = () => {
             <div className="thmb_cntnt">
               <ul className="tag mb0">
                 <li className="list-inline-item">
-                  <a href="#">For Rent</a>
+                  <span>For Rent</span>
                 </li>
               </ul>
             </div>
@@ -36,10 +36,10 @@ const TableData = () => {
                 <span className="flaticon-placeholder"></span>
                 {item.location}
               </p>
-              <a className="fp_price text-thm" href="#">
+              <span className="fp_price text-thm">
                 ${item.price}
                 <small>/mo</small>
-              </a>
+              </span>
             </div>
           </div>
         </div>
@@ -65,9 +65,9 @@ const TableData = () => {
             data-placement="top"
             title="Edit"
           >
-            <a href="#">
+            <span>
               <span className="flaticon-edit"></span>
-            </a>
+            </span>
           </li>
           {/* End li */}
 
@@ -77,9 +77,9 @@ const TableData = () => {
             data-placement="top"
             title="Delete"
           >
-            <a href="#">
+            <span>
               <span className="flaticon-garbage"></span>
-            </a>
+            </span>
           </li>
         </ul>
       </td>

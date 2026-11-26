@@ -19,7 +19,6 @@ const Form = () => {
 
     handleSignIn(email, password)
       .then((userCredentials) => {
-        console.log("user credentials...", userCredentials);
         // setCurrentUser(userCredentials); // Aici trebuie să asiguri că userCredentials este gestionat corect
         router.push("/dashboard");
       })

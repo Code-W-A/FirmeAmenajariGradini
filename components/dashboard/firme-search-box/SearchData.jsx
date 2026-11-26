@@ -15,7 +15,6 @@ const SearchData = ({ location }) => {
 
   const handleGetData = async () => {
     let data = await handleGetFirestore(location);
-    console.log("Data....", data);
     setData([...data]);
   };
 
@@ -35,8 +34,6 @@ const SearchData = ({ location }) => {
 
   // Logica de ștergere a elementului
   const handleConfirmDelete = async () => {
-    console.log("Deleting item with ID:", selectedItemId);
-    console.log("location.....:", location);
     let updatedData = await handleDeleteFirestoreData(
       `${location}/${selectedItemId}`,
       true,
@@ -100,9 +97,9 @@ const SearchData = ({ location }) => {
                       data-placement="top"
                       title="View"
                     >
-                      <a href="#">
+                      <span>
                         <span className="flaticon-view"></span>
-                      </a>
+                      </span>
                     </li>
                     <Link
                       href={{
@@ -120,9 +117,9 @@ const SearchData = ({ location }) => {
                         data-placement="top"
                         title="Edit"
                       >
-                        <a href="#">
+                        <span>
                           <span className="flaticon-edit"></span>
-                        </a>
+                        </span>
                       </li>
                     </Link>
                     <li

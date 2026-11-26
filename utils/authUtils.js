@@ -26,15 +26,12 @@ export const handleChangeEmail = async (currentPassword, newEmail) => {
       user.email,
       currentPassword
     );
-    console.log("user...", user);
     // Încercăm reautentificarea
     await reauthenticateWithCredential(user, credential);
-    console.log("Reautentificare reușită.");
 
     // Dacă reautentificarea a reușit, încercăm să actualizăm emailul
     try {
       await verifyBeforeUpdateEmail(user, newEmail);
-      console.log("Actualizarea emailului reușită.");
       return ""; // Returnăm un șir gol pentru a indica succesul
     } catch (error) {
       // Prindem orice eroare care apare la actualizarea emailului
@@ -49,7 +46,6 @@ export const handleChangeEmail = async (currentPassword, newEmail) => {
 };
 
 export const handleChangePassword = async (currentPassword, newPassword) => {
-  console.log("change passowrd...");
   try {
     const user = auth.currentUser;
     const credential = EmailAuthProvider.credential(
@@ -60,10 +56,8 @@ export const handleChangePassword = async (currentPassword, newPassword) => {
       .then(async () => {
         await updatePassword(user, newPassword)
           .then(() => {
-            console.log("password succesfuly changed");
           })
           .catch((error) => {
-            console.log("password error changed", error);
           });
       })
       .catch((err) => {
@@ -72,7 +66,6 @@ export const handleChangePassword = async (currentPassword, newPassword) => {
         }
       });
   } catch (err) {
-    console.log("error on handlechange pass", err);
   }
 };
 
@@ -92,14 +85,12 @@ export const handleDeleteAccount = async (currentPassword) => {
       auth.currentUser.email,
       currentPassword
     );
-    console.log("-------test----");
     const result = await reauthenticateWithCredential(
       auth.currentUser,
       credential
     );
 
     await deleteUser(result.user).then(() => {
-      console.log("deleted successfuly...auth account");
     });
   } catch (error) {
     console.error("error delete user auth or firestore...", error);
@@ -120,7 +111,6 @@ export const handleResetPassword = async (email) => {
 // handleFirebaseAuthError.js
 export const handleFirebaseAuthError = (error) => {
   let message = "";
-  console.log("test...", error.code);
   switch (error.code) {
     case "auth/invalid-email":
       message = "firebaseErrorInvalidEmail";
@@ -169,11 +159,8 @@ export const handleSignIn = async (email, password) => {
       emailNew,
       password
     );
-    console.log("userCredentials...", userCredentials.user.uid);
     return userCredentials; // Returnează userCredentials pentru succes
   } catch (error) {
-    console.log("error on sign in user...message...", error.message);
-    console.log("error on sign in user...code...", error.code);
     throw error; // Propagă eroarea mai departe
   }
 };

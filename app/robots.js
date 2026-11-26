@@ -10,6 +10,7 @@ export default function robots() {
           "/studio",
           "/studio/",
           "/dashboard",
+          "/create-listing",
           "/adauga-",
           "/lista-",
           "/mesaje",
